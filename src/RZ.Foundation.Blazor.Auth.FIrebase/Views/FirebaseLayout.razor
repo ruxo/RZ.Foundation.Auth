@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+
+<HeadContent>
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+    <link href="_content/Pace6.Auth/firebase.css" rel="stylesheet"/>
+</HeadContent>
+
+<MudSettings Theme="Theme" />
+
+<MudLayout>
+    @Body
+</MudLayout>
+
+@code {
+
+    [CascadingParameter(Name="RzBlazor.Theme")] public MudTheme? Theme { get; set; }
+
+}

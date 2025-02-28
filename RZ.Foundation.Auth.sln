@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{822C42DD-DF2C-4923-968D-195692E95880}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RZ.Foundation.Blazor.Auth.Firebase", "src\RZ.Foundation.Blazor.Auth.FIrebase\RZ.Foundation.Blazor.Auth.Firebase.csproj", "{04A8601E-8694-41FC-B7EB-7FD79A49AA81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35909941-4DF2-4E49-9B91-A8052EC5ACEC}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{67D9E8DF-8AF0-4C4D-BE27-703AA79B9B4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Firebase", "examples\Blazor.Firebase\Blazor.Firebase.csproj", "{72CCD37C-602A-4467-AC22-754B77565117}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04A8601E-8694-41FC-B7EB-7FD79A49AA81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A8601E-8694-41FC-B7EB-7FD79A49AA81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A8601E-8694-41FC-B7EB-7FD79A49AA81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A8601E-8694-41FC-B7EB-7FD79A49AA81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72CCD37C-602A-4467-AC22-754B77565117}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72CCD37C-602A-4467-AC22-754B77565117}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72CCD37C-602A-4467-AC22-754B77565117}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72CCD37C-602A-4467-AC22-754B77565117}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04A8601E-8694-41FC-B7EB-7FD79A49AA81} = {822C42DD-DF2C-4923-968D-195692E95880}
+		{72CCD37C-602A-4467-AC22-754B77565117} = {67D9E8DF-8AF0-4C4D-BE27-703AA79B9B4D}
+	EndGlobalSection
+EndGlobal

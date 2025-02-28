@@ -1,0 +1,48 @@
+﻿@page "/auth/login/success"
+@using System.Diagnostics
+@using System.Security.Claims
+
+@layout FirebaseLayout
+
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavManager
+@inject FirebaseAuthService AuthService
+@inject ILogger<LoginSuccess> Logger
+
+@code {
+
+    [SupplyParameterFromQuery]
+    public string? ReturnUrl { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        var httpContext = HttpContextAccessor.HttpContext;
+        Debug.Assert(httpContext is not null);
+        var afterSignInInfo = httpContext.Request.Cookies["after-signin"];
+        var user = afterSignInInfo.Bind(DecodeSignInInfo);
+
+        var returnUrl = ReturnUrl ?? "/";
+        if (user is null)
+            NavManager.NavigateTo(returnUrl);
+        else{
+            var expiration = user.GetExpiration() ?? throw new InvalidOperationException("No expiration time found in the principal");
+            var authProps = new AuthenticationProperties {
+                IsPersistent = true,
+                ExpiresUtc = expiration
+            };
+            await httpContext.SignInAsync(FirebaseAuthentication.Scheme, user, authProps);
+
+            var clientRedirection = $"/redirect?ReturnUrl={returnUrl}";
+            Logger.LogDebug("Success to {Path}", clientRedirection);
+            NavManager.NavigateTo(clientRedirection);
+        }
+    }
+
+    ClaimsPrincipal? DecodeSignInInfo(string infoText) {
+        var (ex, user) = Try(AuthService, s => s.DecodeSignIn(infoText));
+        if (ex is not null){
+            Logger.LogWarning(ex, "Trying to login with a corrupted Sign-in information. This may be normal if happened after the service is just restarted. Info: [{Info}]", infoText);
+            return null;
+        }
+        return user;
+    }
+}

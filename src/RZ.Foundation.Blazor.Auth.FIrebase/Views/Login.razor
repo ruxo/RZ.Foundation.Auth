@@ -1,0 +1,39 @@
+﻿@page "/auth/login"
+@layout FirebaseLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@inherits ReactiveUI.Blazor.ReactiveInjectableComponentBase<LoginViewModel>
+
+<MudContainer MaxWidth="MaxWidth.ExtraSmall">
+    <div class="card-container">
+        <MudCard Outlined class="rounded-xl">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    @if (ViewModel!.ErrorMessage is null){
+                        <MudAlert Severity="Severity.Info">Choose authentication method</MudAlert>
+                    }
+                    else{
+                        <MudAlert Severity="Severity.Error">@ViewModel!.ErrorMessage</MudAlert>
+                    }
+                    <MudText Typo="Typo.h6">Login</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudStack>
+                    <MudTextField @bind-Value="ViewModel!.Email" Variant="Variant.Filled" Label="Email"/>
+                    <MudTextField @bind-Value="ViewModel!.Password" Variant="Variant.Filled" Label="Password" InputType="InputType.Password"/>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating"
+                               StartIcon="@Icons.Material.Filled.Login" OnClick="@(() => ViewModel!.SignInWithEmail(ReturnUrl))">
+                        Login
+                    </MudButton>
+                    <MudDivider Class="my-2"/>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Disabled="ViewModel!.IsAuthenticating"
+                               OnClick="@(() => ViewModel!.SignInWithGoogle(ReturnUrl))">
+                        <MudImage Width="24" Height="24" Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"/>
+                        <MudText Typo="Typo.button" Class="ms-2">Google</MudText>
+                    </MudButton>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </div>
+</MudContainer>

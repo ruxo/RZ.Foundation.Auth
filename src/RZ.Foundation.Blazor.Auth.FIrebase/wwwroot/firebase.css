@@ -1,0 +1,31 @@
+.card-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-container .mud-paper {
+    min-height: 4in;
+}
+
+/* Text Outlined */
+.mud-input.mud-input-outlined .mud-input-outlined-border {
+    border-radius: 0.5rem;
+}
+
+/* Text Filled */
+.mud-input.mud-input-filled {
+    background-color: color-mix(in srgb, var(--mud-palette-primary) 5%, transparent);
+    border-top-left-radius: calc(var(--mud-default-borderradius) / 2);
+    border-top-right-radius: calc(var(--mud-default-borderradius) / 2);
+}
+
+@media(hover: hover)and (pointer: fine) {
+    .mud-input.mud-input-filled:hover {
+        background-color: white;
+    }
+}
+.mud-input.mud-input-filled:focus-within {
+    background-color: white;
+}

@@ -1,0 +1,8 @@
+﻿@if (initialized && !isAuthenticated) {
+    <MudText Typo="Typo.h3" Style="text-align: center">ห้ามเข้า</MudText>
+
+    <div class="d-flex flex-column align-center justify-center" style="height: 100%">
+        <MudText Typo="Typo.h4">คุณไม่มีสิทธิ์เข้าถึงหน้านี้</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/">กลับสู่หน้าแรก</MudButton>
+    </div>
+}
