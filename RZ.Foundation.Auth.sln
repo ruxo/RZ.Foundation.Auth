@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{67
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Firebase", "examples\Blazor.Firebase\Blazor.Firebase.csproj", "{72CCD37C-602A-4467-AC22-754B77565117}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Auth0", "examples\Blazor.Auth0\Blazor.Auth0.csproj", "{612248A9-F899-4C42-B9B7-2F38B4636549}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,9 +36,14 @@ Global
 		{72CCD37C-602A-4467-AC22-754B77565117}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72CCD37C-602A-4467-AC22-754B77565117}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72CCD37C-602A-4467-AC22-754B77565117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{612248A9-F899-4C42-B9B7-2F38B4636549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{612248A9-F899-4C42-B9B7-2F38B4636549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{612248A9-F899-4C42-B9B7-2F38B4636549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{612248A9-F899-4C42-B9B7-2F38B4636549}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{04A8601E-8694-41FC-B7EB-7FD79A49AA81} = {822C42DD-DF2C-4923-968D-195692E95880}
 		{72CCD37C-602A-4467-AC22-754B77565117} = {67D9E8DF-8AF0-4C4D-BE27-703AA79B9B4D}
+		{612248A9-F899-4C42-B9B7-2F38B4636549} = {67D9E8DF-8AF0-4C4D-BE27-703AA79B9B4D}
 	EndGlobalSection
 EndGlobal

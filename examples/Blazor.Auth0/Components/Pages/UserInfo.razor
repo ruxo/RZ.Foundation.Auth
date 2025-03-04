@@ -1,0 +1,78 @@
+﻿@page "/profile"
+
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@using RZ.Foundation
+@using RZ.Foundation.Blazor
+@using Microsoft.AspNetCore.Components.Authorization
+@using RZ.Foundation.Blazor.Auth
+@using Microsoft.AspNetCore.Components.Sections
+@inherits ReactiveUI.Blazor.ReactiveComponentBase<UserInfoViewModel>
+
+@rendermode Program.ServerRender
+
+@attribute [Authorize]
+
+<AuthorizeView>
+    <SectionContent SectionName="appbar-actions">
+        <MudAvatar Color="Color.Secondary">@context.User.GetShortName()</MudAvatar>
+    </SectionContent>
+</AuthorizeView>
+
+<MudPaper Class="ma-5 pa-5">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/Account/Logout">Logout</MudButton>
+    <MudExpansionPanels Class="mt-6">
+        <MudExpansionPanel Text="All claims"  Expanded="true">
+            <MudDataGrid Items="ViewModel!.User.Claims" Dense="true" Bordered="true">
+                <Columns>
+                    <PropertyColumn Property="x => x.Type"/>
+                    <PropertyColumn Property="x => x.Value" T="Claim" TProperty="string" CellStyleFunc="@FixWidthForAccessToken"/>
+                    <PropertyColumn Property="x => x.Issuer"/>
+                    <PropertyColumn Property="x => x.Properties.Count" Title="Sub-properties count"/>
+                </Columns>
+            </MudDataGrid>
+        </MudExpansionPanel>
+        @{
+            var users = ViewModel!.User.Identities.ToArray();
+            for (var i = 0; i < users.Length; ++i)
+            {
+                var user = users[i];
+
+                <MudExpansionPanel Text="@($"Identity #{i + 1}")">
+                    <MudList T="string">
+                        <MudListItem Text="@($"Name: {user.Name}")" />
+                        <MudListItem Text="@($"Name Type: {user.NameClaimType}")" />
+                        <MudListItem Text="@($"Role Type: {user.RoleClaimType}")" />
+                        <MudListItem Text="@($"Label: {user.Label}")" />
+                        <MudListItem Text="@($"Authenticated? {user.IsAuthenticated}")" />
+                    </MudList>
+                    <MudText Typo="Typo.h6">Claims</MudText>
+                    <MudDataGrid Items="@user.Claims" Dense="true" Bordered="true">
+                        <Columns>
+                            <PropertyColumn Property="x => x.Type"/>
+                            <PropertyColumn Property="x => x.Value" T="Claim" TProperty="string" CellStyleFunc="@FixWidthForAccessToken"/>
+                            <PropertyColumn Property="x => x.Issuer"/>
+                            <PropertyColumn Property="x => x.Properties.Count" Title="Sub-properties count"/>
+                        </Columns>
+                    </MudDataGrid>
+                </MudExpansionPanel>
+            }
+        }
+    </MudExpansionPanels>
+
+    <MudExpansionPanels Class="mt-6">
+        <MudExpansionPanel Text="Access Token">
+            <MudText>@ViewModel!.AccessToken</MudText>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
+</MudPaper>
+
+@code {
+
+    public UserInfo(VmToolkit<UserInfo> tool) {
+        ViewModel = tool.Services.Create<UserInfoViewModel>();
+    }
+
+    static string FixWidthForAccessToken(Claim claim)
+        => claim.Type == "access_token" ? "width: 40em; word-break: break-all" : string.Empty;
+}
