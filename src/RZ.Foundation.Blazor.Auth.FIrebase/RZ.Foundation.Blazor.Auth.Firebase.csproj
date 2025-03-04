@@ -11,13 +11,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" />
-    <PackageReference Include="TiraxTech.Uri" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
-    <PackageReference Include="RZ.Foundation" />
-    <PackageReference Include="RZ.AspNet.Bootstrapper" />
     <PackageReference Include="RZ.Foundation.Blazor.MudBlazor" />
     <PackageReference Include="ReactiveUI.Blazor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RZ.Foundation.Blazor.Auth\RZ.Foundation.Blazor.Auth.csproj" />
   </ItemGroup>
 
 </Project>

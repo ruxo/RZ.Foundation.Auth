@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using JetBrains.Annotations;
 using TiraxTech;
 
 namespace RZ.Foundation.Blazor.Auth;
@@ -16,12 +17,14 @@ public abstract record CheckUserResult
 {
     public sealed record Passed : CheckUserResult
     {
+        [UsedImplicitly]
         public static readonly CheckUserResult Instance = new Passed();
     }
     public sealed record Replace(ClaimsPrincipal User) : CheckUserResult;
 
     public sealed record Expired : CheckUserResult
     {
+        [UsedImplicitly]
         public static readonly CheckUserResult Instance = new Expired();
     }
 }

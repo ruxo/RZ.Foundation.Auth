@@ -1,8 +1,6 @@
 ﻿using LanguageExt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RZ.AspNet;
@@ -22,25 +20,18 @@ public static class FirebaseAuthentication
            .AddHttpContextAccessor()
            .AddCascadingAuthenticationState()
            .AddSingleton<FirebaseAuthService>()
+           .AddRzAuth(authOptions)
            .AddAuthentication(defaultScheme: Scheme)
            .AddCookie(Scheme, opts => {
                 opts.LoginPath = "/auth/login";
                 opts.LogoutPath = "/auth/logout";
                 opts.SlidingExpiration = false;
             });
-        if (authOptions is null)
-            services.AddAuthorizationCore();
-        else
-            services.AddAuthorizationCore(authOptions);
 
         services.AddHttpClient("FirebaseAuth_GoogleIdentity", http => http.BaseAddress = new Uri("https://identitytoolkit.googleapis.com/"));
 
         services.AddTransient<FirebaseJsInterop>()
-                .AddScoped<LoginViewModel>()
-                .AddScoped<UserState>()
-                .AddScoped<CircuitHandler, AuthCircuitWatcher>()
-                .AddScoped<AuthenticationStateProvider, RzAuthStateProvider>()
-                .AddScoped<RzAuthStateProvider>(sp => (RzAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
+                .AddScoped<LoginViewModel>();
 
         return services;
     }

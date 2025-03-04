@@ -1,27 +1,18 @@
-using Auth0.AspNetCore.Authentication;
 using Blazor.Auth0.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
 using RZ.Foundation;
-using RZ.Foundation.Helpers;
-using RZ.Foundation.Types;
+using RZ.Foundation.Blazor.Auth0;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services
-       .AddCascadingAuthenticationState()
+builder.AddAuth0Authentication()
+       .Services
        .AddMudServices()
        .AddRzMudBlazorSettings()
        .AddRazorComponents()
        .AddInteractiveServerComponents();
-
-builder.Services
-       .AddAuth0WebAppAuthentication(opts => {
-            var dict = KeyValueString.Parse(builder.Configuration.GetConnectionString("Auth0") ?? throw new ErrorInfoException(StandardErrorCodes.MissingConfiguration));
-            opts.Domain = dict["Domain"] ?? throw new ErrorInfoException(StandardErrorCodes.MissingConfiguration);
-            opts.ClientId = dict["ClientId"] ?? throw new ErrorInfoException(StandardErrorCodes.MissingConfiguration);
-        });
 
 var app = builder.Build();
 
@@ -34,7 +25,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.UseAntiforgery();
 
