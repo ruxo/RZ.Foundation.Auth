@@ -2,6 +2,7 @@ using Blazor.Auth0.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
 using RZ.Foundation;
+using RZ.Foundation.Blazor.Auth;
 using RZ.Foundation.Blazor.Auth0;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.AddAuth0Authentication()
        .Services
        .AddMudServices()
        .AddRzMudBlazorSettings()
+       .AddScoped<IAfterSignInHandler, Blazor.Auth0.Auth.AfterSignInHandler>()  // register App registration flow handler
        .AddRazorComponents()
        .AddInteractiveServerComponents();
 

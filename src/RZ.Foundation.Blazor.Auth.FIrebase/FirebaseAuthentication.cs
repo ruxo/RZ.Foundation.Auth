@@ -17,7 +17,6 @@ public static class FirebaseAuthentication
 
     public static IServiceCollection AddFirebaseAuthentication(this IServiceCollection services, Action<AuthorizationOptions>? authOptions = null) {
         services
-           .AddHttpContextAccessor()
            .AddCascadingAuthenticationState()
            .AddSingleton<FirebaseAuthService>()
            .AddRzAuth(authOptions)

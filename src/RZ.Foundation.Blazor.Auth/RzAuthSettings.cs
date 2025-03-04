@@ -13,6 +13,7 @@ public static class RzAuthSettings
         else
             services.AddAuthorizationCore(authOptions);
         return services
+              .AddHttpContextAccessor()
               .AddScoped<UserState>()
               .AddScoped<CircuitHandler, AuthCircuitWatcher>()
               .AddScoped<AuthenticationStateProvider, RzAuthStateProvider>()
