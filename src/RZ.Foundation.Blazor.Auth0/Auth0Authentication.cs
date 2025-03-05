@@ -2,7 +2,6 @@
 using Auth0.AspNetCore.Authentication;
 using JetBrains.Annotations;
 using LanguageExt;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +30,7 @@ public static class AUth0Authentication
         var auth0Registration =
             builder.Services
                    .AddAuth0WebAppAuthentication(opts => {
+                        opts.ForwardSignIn = "/auth/login";
                         opts.Domain = dict["Domain"];
                         opts.ClientId = dict["ClientId"];
                         opts.ClientSecret = dict.Get("ClientSecret").ToNullable();
@@ -52,10 +52,8 @@ public static class AUth0Authentication
                                         break;
 
                                     case AfterSignInCheck.CustomLoginFlow custom:
-                                        var url = context.Properties?.RedirectUri ?? (context.Properties?.Items.TryGetValue(OpenIdConnectDefaults.RedirectUriForCodePropertiesKey, out var v) ?? false
-                                                                                          ? v
-                                                                                          : null);
-                                        var path = url is not null ? custom.CustomFlowPath.UpdateQuery("returnUrl", url) : custom.CustomFlowPath;
+                                        var url = context.Properties?.RedirectUri ?? "/";
+                                        var path = custom.CustomFlowPath.UpdateQuery("returnUrl", url);
                                         context.Response.Redirect(path.ToString());
                                         context.HandleResponse();
                                         break;
