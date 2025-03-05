@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using RZ.Foundation.Helpers;
 
 namespace RZ.Foundation.Blazor.Auth;
 
@@ -41,6 +42,10 @@ public static class UserExtension
     [Pure]
     public static string? GetPicture(this ClaimsPrincipal principal)
         => principal.FindFirstValue("picture");
+
+    [Pure]
+    public static string? GetUserId(this ClaimsPrincipal principal)
+        => principal.Claims.FindValueByPriority(JwtRegisteredClaimNames.Sub, ClaimTypes.NameIdentifier);
 
     [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string? FindFirstValue(this ClaimsPrincipal principal, string claimType)

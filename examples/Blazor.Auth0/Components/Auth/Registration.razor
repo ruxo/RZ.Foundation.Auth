@@ -1,0 +1,10 @@
+﻿@page "/Registration"
+
+<MudText>Registered</MudText>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@ReturnUrl">OK</MudButton>
+
+@code {
+
+    [SupplyParameterFromQuery] string? ReturnUrl { get; set; }
+
+}
