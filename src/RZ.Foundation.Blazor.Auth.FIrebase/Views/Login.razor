@@ -20,7 +20,14 @@
                     }
                 </div>
                 <MudTextField Variant="Variant.Filled" @bind-Value="ViewModel!.Email" Label="Email"/>
-                <MudTextField Variant="Variant.Filled" @bind-Value="ViewModel!.Password" Label="Password" InputType="InputType.Password"/>
+
+                <div>
+                    <MudTextField Variant="Variant.Filled" @bind-Value="ViewModel!.Password" Label="Password" InputType="InputType.Password"/>
+                    @if (ViewModel!.ForgotPasswordText is {} forgotText){
+                        <MudLink Typo="Typo.inherit" Color="Color.Secondary" Style="display:block;text-align:right" Href="/auth/password/reset">@forgotText</MudLink>
+                    }
+                </div>
+
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating"
                            StartIcon="@Icons.Material.Filled.Login" OnClick="@(() => ViewModel!.SignInWithEmail(ReturnUrl))">
                     Login
@@ -38,7 +45,7 @@
                 <div style="display: flex; flex-direction: row; justify-content: center">
                     <MudText Typo="Typo.body2">@ViewModel!.NoAccountText</MudText>
                     &nbsp;
-                    <MudLink Color="Color.Secondary" Typo="Typo.body2">@ViewModel!.SignUpText</MudLink>
+                    <MudLink Color="Color.Secondary" Typo="Typo.body2" Href="/auth/signup">@ViewModel!.SignUpText</MudLink>
                 </div>
             </MudStack>
         </MudPaper>

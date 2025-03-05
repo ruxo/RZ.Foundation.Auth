@@ -43,6 +43,7 @@ public class LoginViewModel(ILogger<LoginViewModel> logger, IServiceProvider sp,
     public string? Subtitle { get; set; } = "Choose your login method";
     public Typo SubtitleTypo { get; set; } = Typo.subtitle1;
     public string? SubtitleClass { get; set; } = "rz-text-center rz-muted";
+    public string? ForgotPasswordText { get; set; } = "Forgot your password?";
     public string? MiddleText { get; set; } = "Or continue with";
     public string? NoAccountText { get; set; } = "Don't have an account?";
     public string? SignUpText { get; set; } = "Sign up";

@@ -42,7 +42,7 @@
     min-height: 4in;
 }
 
-::deep .mud-link {
+::deep footer.mud-link {
     text-underline-offset: 4px;
     text-decoration-line: underline !important;
 }

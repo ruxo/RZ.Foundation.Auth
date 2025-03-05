@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
 using RZ.Foundation;
 using RZ.Foundation.Blazor.Auth;
+using RZ.Foundation.Blazor.Auth.Views;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +13,19 @@ builder.Services
        .AddInteractiveServerComponents();
 
 builder.Services
-       .AddMudServices()    // register MudBlazor
-       .AddRzMudBlazorSettings()    // register RZ MudBlazor settings
+       .AddMudServices() // register MudBlazor
+       .AddRzMudBlazorSettings() // register RZ MudBlazor settings
        .AddScoped<IAfterSignInHandler, Blazor.Firebase.Auth.AfterSignInHandler>();  // register App registration flow handler
 
 var firebase = new FirebaseAuthenticationModule();
 await firebase.InstallServices(builder);    // Install Firebase services
+
+builder.Services
+       .AddScoped<LoginViewModel>(sp => {
+            var vm = sp.Create<LoginViewModel>();
+            vm.Title = "Login to Firebase Example";
+            return vm;
+        });
 
 var app = builder.Build();
 
