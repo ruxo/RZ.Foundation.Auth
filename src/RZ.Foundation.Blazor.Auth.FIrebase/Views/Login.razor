@@ -4,36 +4,50 @@
 
 @inherits ReactiveUI.Blazor.ReactiveInjectableComponentBase<LoginViewModel>
 
+@if (ViewModel!.ErrorMessage is {} errorMessage){
+    <MudAlert Severity="Severity.Error">@errorMessage</MudAlert>
+}
 <MudContainer MaxWidth="MaxWidth.ExtraSmall">
     <div class="card-container">
-        <MudCard Outlined class="rounded-xl">
-            <MudCardHeader>
-                <CardHeaderContent>
-                    @if (ViewModel!.ErrorMessage is null){
-                        <MudAlert Severity="Severity.Info">Choose authentication method</MudAlert>
+        <MudPaper Elevation="2" Class="rounded-xl pa-7">
+            <MudStack Spacing="5">
+                <div>
+                    @if (ViewModel!.Title is { } title){
+                        <MudText Typo="ViewModel!.TitleTypo" Class="@ViewModel!.TitleClass">@title</MudText>
                     }
-                    else{
-                        <MudAlert Severity="Severity.Error">@ViewModel!.ErrorMessage</MudAlert>
+                    @if (ViewModel!.Subtitle is { } subtitle){
+                        <MudText Typo="ViewModel!.SubtitleTypo" Class="@ViewModel!.SubtitleClass">@subtitle</MudText>
                     }
-                    <MudText Typo="Typo.h6">Login</MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudStack>
-                    <MudTextField @bind-Value="ViewModel!.Email" Variant="Variant.Filled" Label="Email"/>
-                    <MudTextField @bind-Value="ViewModel!.Password" Variant="Variant.Filled" Label="Password" InputType="InputType.Password"/>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating"
-                               StartIcon="@Icons.Material.Filled.Login" OnClick="@(() => ViewModel!.SignInWithEmail(ReturnUrl))">
-                        Login
-                    </MudButton>
-                    <MudDivider Class="my-2"/>
-                    <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Disabled="ViewModel!.IsAuthenticating"
+                </div>
+                <MudTextField Variant="Variant.Filled" @bind-Value="ViewModel!.Email" Label="Email"/>
+                <MudTextField Variant="Variant.Filled" @bind-Value="ViewModel!.Password" Label="Password" InputType="InputType.Password"/>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating"
+                           StartIcon="@Icons.Material.Filled.Login" OnClick="@(() => ViewModel!.SignInWithEmail(ReturnUrl))">
+                    Login
+                </MudButton>
+                <div class="rz-middle-bar">
+                    <span class="rz-middle-bar-text">@ViewModel!.MiddleText</span>
+                </div>
+                <div style="margin: 0.25rem 0">
+                    <MudButton Style="width: 100%" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="ViewModel!.IsAuthenticating"
                                OnClick="@(() => ViewModel!.SignInWithGoogle(ReturnUrl))">
                         <MudImage Width="24" Height="24" Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"/>
                         <MudText Typo="Typo.button" Class="ms-2">Google</MudText>
                     </MudButton>
-                </MudStack>
-            </MudCardContent>
-        </MudCard>
+                </div>
+                <div style="display: flex; flex-direction: row; justify-content: center">
+                    <MudText Typo="Typo.body2">@ViewModel!.NoAccountText</MudText>
+                    &nbsp;
+                    <MudLink Color="Color.Secondary" Typo="Typo.body2">@ViewModel!.SignUpText</MudLink>
+                </div>
+            </MudStack>
+        </MudPaper>
+
+        <footer class="mt-6 rz-text-center">
+            <MudText Typo="Typo.body2" Class="rz-muted" Style="font-size: 0.75rem">
+                By clicking login you agree to our <MudLink Typo="Typo.inherit" Color="Color.Inherit" Target="_blank" Href="@ViewModel!.TermsAndConditionsLink">Terms of Service</MudLink>
+                and <MudLink Typo="Typo.inherit" Color="Color.Inherit" Target="_blank" Href="@ViewModel!.PrivacyPolicyLink">Privacy Policy</MudLink>
+            </MudText>
+        </footer>
     </div>
 </MudContainer>

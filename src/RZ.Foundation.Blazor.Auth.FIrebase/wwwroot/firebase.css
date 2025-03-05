@@ -17,8 +17,8 @@
 /* Text Filled */
 .mud-input.mud-input-filled {
     background-color: color-mix(in srgb, var(--mud-palette-primary) 5%, transparent);
-    border-top-left-radius: calc(var(--mud-default-borderradius) / 2);
-    border-top-right-radius: calc(var(--mud-default-borderradius) / 2);
+    border-top-left-radius: 0.75em;
+    border-top-right-radius: 0.75em;
 }
 
 @media(hover: hover)and (pointer: fine) {

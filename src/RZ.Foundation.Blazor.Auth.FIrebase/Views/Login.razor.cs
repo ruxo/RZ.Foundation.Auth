@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
+using MudBlazor;
 using RZ.Foundation.Blazor.MVVM;
 using RZ.Foundation.Types;
 using TiraxTech;
@@ -9,12 +10,9 @@ using TiraxTech;
 namespace RZ.Foundation.Blazor.Auth.Views;
 
 [UsedImplicitly]
-partial class Login
+partial class Login(IJSRuntime js, NavigationManager nav)
 {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
-
-    [Inject] public required NavigationManager NavManager { get; set; }
-    [Inject] public required IJSRuntime JS { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender){
@@ -24,9 +22,9 @@ partial class Login
             // workaround ก็คือ ให้ NavigationManager ฝั่ง WASM redirect ซักรอบ ซึ่งมันไม่ได้ redirect จริง (แปลว่าจะไม่ได้ call firstRender = true อีกครั้ง)
             // แต่มันจะ binding parameter ใหม่ และเรียก skip firstRender ไปเลย ซึ่งทำให้ redirect ถูก!
             //
-            var path = await JS.InvokeAsync<string>("window.location.toString");
-            if (path != NavManager.Uri){
-                NavManager.NavigateTo(path, replace: true);
+            var path = await js.InvokeAsync<string>("window.location.toString");
+            if (path != nav.Uri){
+                nav.NavigateTo(path, replace: true);
                 return;
             }
         }
@@ -34,10 +32,23 @@ partial class Login
     }
 }
 
-public sealed class LoginViewModel(ILogger<LoginViewModel> logger, NavigationManager navManager, FirebaseAuthService authService, IServiceProvider sp)
+public class LoginViewModel(ILogger<LoginViewModel> logger, IServiceProvider sp, NavigationManager navManager, FirebaseAuthService authService)
     : ViewModel, ISignInHandler
 {
     Outcome<SignInInfo>? afterSignInInfo;
+
+    public string? Title { get; set; } = "Login to your account";
+    public Typo TitleTypo { get; set; } = Typo.h5;
+    public string? TitleClass { get; set; } = "rz-text-center";
+    public string? Subtitle { get; set; } = "Choose your login method";
+    public Typo SubtitleTypo { get; set; } = Typo.subtitle1;
+    public string? SubtitleClass { get; set; } = "rz-text-center rz-muted";
+    public string? MiddleText { get; set; } = "Or continue with";
+    public string? NoAccountText { get; set; } = "Don't have an account?";
+    public string? SignUpText { get; set; } = "Sign up";
+
+    public string TermsAndConditionsLink { get; set; } = "/terms";
+    public string PrivacyPolicyLink { get; set; } = "/privacy";
 
     public bool IsAuthenticating
     {
