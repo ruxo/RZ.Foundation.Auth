@@ -14,6 +14,10 @@ partial class Login(IJSRuntime js, NavigationManager nav)
 {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
+    protected override void OnInitialized() {
+        ViewModel!.ReturnUrl = ReturnUrl;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         if (firstRender){
             // มันมี gap ระหว่างการ redirect จาก server มา WASM ที่ทำให้ไม่สามารถ extract query string ได้ถูกต้อง เพราะ NavManager เองก็เพี้ยน มี URL ที่ไม่ตรง
@@ -74,6 +78,10 @@ public class LoginViewModel(ILogger<LoginViewModel> logger, IServiceProvider sp,
         get;
         set => this.RaiseAndSetIfChanged(ref field, value);
     }
+
+    public string? ReturnUrl { get; set; }
+
+    public string SignUpLink => $"/auth/signup?returnUrl={ReturnUrl ?? "/"}";
 
     [JSInvokable]
     public void AfterSignIn(bool success, SignInInfo? info, string? error) {

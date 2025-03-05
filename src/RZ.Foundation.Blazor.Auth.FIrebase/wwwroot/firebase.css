@@ -9,6 +9,39 @@
     min-height: 4in;
 }
 
+.rz-middle-bar {
+    position: relative;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.rz-middle-bar::after {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    inset: 0px;
+    top: 50%;
+    z-index: 0;
+    content: "";
+    border-top: 1px solid hsl(240 5.9 90);
+}
+
+.rz-middle-bar-text {
+    position: relative;
+    z-index: 10;
+    padding: 0 0.5rem;
+    color: hsl(240 3.8 46.1);
+    background-color: hsl(0 0 100);
+}
+
+.rz-text-center {
+    text-align: center;
+}
+
+.rz-muted {
+    color: var(--mud-palette-drawer-icon);
+}
+
 /* Text Outlined */
 .mud-input.mud-input-outlined .mud-input-outlined-border {
     border-radius: 0.5rem;

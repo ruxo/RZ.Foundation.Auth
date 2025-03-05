@@ -30,7 +30,8 @@ public static class FirebaseAuthentication
         services.AddHttpClient("FirebaseAuth_GoogleIdentity", http => http.BaseAddress = new Uri("https://identitytoolkit.googleapis.com/"));
 
         services.AddTransient<FirebaseJsInterop>()
-                .AddScoped<LoginViewModel>();
+                .AddScoped<LoginViewModel>()
+                .AddScoped<SignUpViewModel>();
 
         return services;
     }
