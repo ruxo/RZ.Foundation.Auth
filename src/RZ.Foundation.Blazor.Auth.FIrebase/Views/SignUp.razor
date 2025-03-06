@@ -4,9 +4,6 @@
 
 @inherits ReactiveUI.Blazor.ReactiveInjectableComponentBase<SignUpViewModel>
 
-@if (ViewModel!.ErrorMessage is {} errorMessage){
-    <MudAlert Severity="Severity.Error">@errorMessage</MudAlert>
-}
 <MudContainer MaxWidth="MaxWidth.ExtraSmall">
     <div class="card-container">
         <MudPaper Elevation="2" Class="rounded-xl pa-7">
@@ -22,9 +19,16 @@
                 <MudTextField Variant="Variant.Filled" @bind-Value="ViewModel!.Email" Label="Email"/>
                 <MudTextField Variant="Variant.Filled" @bind-Value="ViewModel!.Password" Label="Password" InputType="InputType.Password"/>
 
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating">
-                    Continue
-                </MudButton>
+                <div style="display:flex;flex-direction:column;gap: 0.25rem">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating"
+                               OnClick="@ViewModel!.SignUpWithEmail">
+                        Continue
+                    </MudButton>
+                    @if (ViewModel!.ErrorMessage is {} errorMessage){
+                        <MudAlert Severity="Severity.Error">@errorMessage</MudAlert>
+                    }
+                </div>
+
                 <div class="rz-middle-bar">
                     <span class="rz-middle-bar-text">@ViewModel!.MiddleText</span>
                 </div>

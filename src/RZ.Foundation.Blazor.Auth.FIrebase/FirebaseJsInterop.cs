@@ -13,7 +13,7 @@ public class FirebaseJsInterop(IJSRuntime js) : IAsyncDisposable
 {
     readonly Lazy<Task<IJSObjectReference>> importModule = new (() => js.InvokeAsync<IJSObjectReference>("import", "/_content/RZ.Foundation.Blazor.Auth.Firebase/firebase.js").AsTask());
 
-    public async ValueTask SetForcusById(string id) {
+    public async ValueTask SetFocusById(string id) {
         var module = await importModule.Value;
         await module.InvokeVoidAsync("setFocusById", id);
     }
@@ -28,6 +28,12 @@ public class FirebaseJsInterop(IJSRuntime js) : IAsyncDisposable
         var module = await importModule.Value;
         using var jsRef = DotNetObjectReference.Create(handler);
         await module.InvokeVoidAsync("signinPassword", jsRef, config, email, password);
+    }
+
+    public async ValueTask SignUpWithEmail(ISignInHandler handler, FirebaseSdkConfig config, string email, string password) {
+        var module = await importModule.Value;
+        using var jsRef = DotNetObjectReference.Create(handler);
+        await module.InvokeVoidAsync("signUpPassword", jsRef, config, email, password);
     }
 
     public async ValueTask StoreAfterSignIn(string encoded) {

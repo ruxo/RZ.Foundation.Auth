@@ -1,9 +1,25 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js'
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
 
-async function signInWith(output, config, signInMethod){
+/**
+ * Get Firebase Authentication instance
+ * @param {Object} config - Firebase configuration object
+ * @returns {Object} - Firebase Authentication instance
+ */
+function getFbAuth(config){
     const app = initializeApp(config);
-    const auth = getAuth(app);
+    return getAuth(app);
+}
+
+/**
+ * Sign in with a Firebase authentication method, then notify the Blazor app with `AfterSignIn` method.
+ * @param {Object} output - Blazor app's JS interop object
+ * @param {Object} config - Firebase configuration object
+ * @param {Function} signInMethod - Firebase sign-in method (e.g., signInWithEmailAndPassword)
+ * @returns {Promise<void>}
+ */
+async function signInWith(output, config, signInMethod){
+    const auth = getFbAuth(config);
 
     try {
         const info = await signInMethod(auth);
@@ -46,6 +62,25 @@ export async function signin(output, config) {
             type: "google",
             accessToken: user.accessToken,
             refToken: credential.accessToken
+        }
+        if (!!user.stsTokenManager) {
+            info.refresh = {
+                token: user.stsTokenManager.refreshToken,
+                expires: user.stsTokenManager.expirationTime
+            }
+        }
+        return info;
+    })
+}
+
+export async function signUpPassword(output, config, email, password){
+    return signInWith(output, config, async (auth) => {
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        const user = result.user;
+        const info = {
+            type: "password",
+            accessToken: user.accessToken,
+            refToken: null   // Firebase password uses OAuth so there is no ID token
         }
         if (!!user.stsTokenManager) {
             info.refresh = {

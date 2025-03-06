@@ -1,7 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using RZ.Foundation.Blazor.MVVM;
 
 namespace RZ.Foundation.Blazor.Auth.Views;
 
@@ -12,11 +11,12 @@ partial class SignUp
 
     protected override void OnInitialized() {
         ViewModel!.ReturnUrl = ReturnUrl;
+        base.OnInitialized();
     }
 }
 
-public class SignUpViewModel(VmToolkit<SignUpViewModel> tool, NavigationManager navManager, FirebaseAuthService authService)
-    : AppViewModel(tool)
+public class SignUpViewModel(VmToolkit<SignUpViewModel> tool, NavigationManager nav, FirebaseAuthService authService)
+    : LoginViewModelBase(tool, nav, authService)
 {
     public string? Title { get; set; } = "Create an account";
     public Typo TitleTypo { get; set; } = Typo.h5;
@@ -28,31 +28,10 @@ public class SignUpViewModel(VmToolkit<SignUpViewModel> tool, NavigationManager 
     public string? AlreadyHaveAccountText { get; set; } = "Already have an account?";
     public string? LoginText { get; set; } = "Log in";
 
-    public bool IsAuthenticating
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public string? Email
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public string? Password
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public string? ErrorMessage
-    {
-        get;
-        set => this.RaiseAndSetIfChanged(ref field, value);
-    }
-
-    public string? ReturnUrl { get; set; }
-
     public string LoginUrl => $"/auth/login?returnUrl={ReturnUrl ?? "/"}";
+
+    public async Task SignUpWithEmail() {
+        if (ValidateEmailAndPassword("login") is { } x)
+            await SignInWith(js => js.SignUpWithEmail(this, AuthService.Config, x.Email, x.Password));
+    }
 }
