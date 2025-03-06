@@ -33,7 +33,8 @@
                     <span class="rz-middle-bar-text">@ViewModel!.MiddleText</span>
                 </div>
                 <div style="margin: 0.25rem 0">
-                    <MudButton Style="width: 100%" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="ViewModel!.IsAuthenticating">
+                    <MudButton Style="width: 100%" Variant="Variant.Outlined" Color="Color.Secondary" Disabled="ViewModel!.IsAuthenticating"
+                               OnClick="@ViewModel!.SignInWithGoogle">
                         <MudImage Width="24" Height="24" Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"/>
                         <MudText Typo="Typo.button" Class="ms-2">Google</MudText>
                     </MudButton>

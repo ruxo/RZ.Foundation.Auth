@@ -84,6 +84,9 @@ public partial class LoginViewModelBase(VmToolkit tool, NavigationManager nav, F
         return (Email, Password);
     }
 
+    public Task SignInWithGoogle()
+        => SignInWith(js => js.SignIn(this, AuthService.Config));
+
     protected async Task SignInWith(Func<FirebaseJsInterop, ValueTask> signInTask, [CallerMemberName] string method = "") {
         Logger.LogDebug("Login with {ReturnUrl}", ReturnUrl);
         IsAuthenticating = true;

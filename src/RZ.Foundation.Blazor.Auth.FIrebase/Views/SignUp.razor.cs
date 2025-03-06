@@ -9,9 +9,9 @@ partial class SignUp
 {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
-    protected override void OnInitialized() {
+    protected override void OnParametersSet() {
         ViewModel!.ReturnUrl = ReturnUrl;
-        base.OnInitialized();
+        base.OnParametersSet();
     }
 }
 

@@ -10,9 +10,9 @@ partial class Login(IJSRuntime js, NavigationManager nav)
 {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
-    protected override void OnInitialized() {
+    protected override void OnParametersSet() {
         ViewModel!.ReturnUrl = ReturnUrl;
-        base.OnInitialized();
+        base.OnParametersSet();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
@@ -56,7 +56,4 @@ public class LoginViewModel(VmToolkit<LoginViewModel> tool, NavigationManager na
         if (ValidateEmailAndPassword("login") is { } x)
             await SignInWith(js => js.SignInWithEmail(this, AuthService.Config, x.Email, x.Password));
     }
-
-    public Task SignInWithGoogle()
-        => SignInWith(js => js.SignIn(this, AuthService.Config));
 }
