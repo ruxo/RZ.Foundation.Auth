@@ -1,5 +1,8 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+    FacebookAuthProvider,
+    GoogleAuthProvider,
+    signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
 
 /**
  * Get Firebase Authentication instance
@@ -33,7 +36,7 @@ export function storeAfterSignIn(encoded){
     document.cookie = `after-signin=${encoded}; path=/; max-age=30; Secure; SameSite=Strict`;
 }
 
-export function signinPassword(output, config, email, password) {
+export function signInPassword(output, config, email, password) {
     return signInWith(output, config, async (auth) => {
         const result = await signInWithEmailAndPassword(auth, email, password);
         const user = result.user;
@@ -52,14 +55,14 @@ export function signinPassword(output, config, email, password) {
     })
 }
 
-export async function signin(output, config) {
+export async function signInWithProvider(output, config, providerType, type) {
     return signInWith(output, config, async (auth) => {
-        const provider = new GoogleAuthProvider();
+        const provider = new providerType();
         const result = await signInWithPopup(auth, provider);
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
         const info = {
-            type: "google",
+            type,
             accessToken: user.accessToken,
             refToken: credential.accessToken
         }
@@ -71,6 +74,14 @@ export async function signin(output, config) {
         }
         return info;
     })
+}
+
+export async function signInGoogle(output, config) {
+    return signInWithProvider(output, config, GoogleAuthProvider, "google");
+}
+
+export async function signInFacebook(output, config) {
+    return signInWithProvider(output, config, FacebookAuthProvider, "facebook");
 }
 
 export async function signUpPassword(output, config, email, password){

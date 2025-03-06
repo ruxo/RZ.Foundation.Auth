@@ -24,7 +24,7 @@ public class SignUpViewModel(VmToolkit<SignUpViewModel> tool, NavigationManager 
     public string? Subtitle { get; set; } = "Create an account to continue";
     public Typo SubtitleTypo { get; set; } = Typo.subtitle1;
     public string? SubtitleClass { get; set; } = "rz-text-center rz-muted";
-    public string? MiddleText { get; set; } = "Or continue with";
+    public string? MiddleText { get; set; } = "Or";
     public string? AlreadyHaveAccountText { get; set; } = "Already have an account?";
     public string? LoginText { get; set; } = "Log in";
 

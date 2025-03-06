@@ -18,16 +18,22 @@ public class FirebaseJsInterop(IJSRuntime js) : IAsyncDisposable
         await module.InvokeVoidAsync("setFocusById", id);
     }
 
-    public async ValueTask SignIn(ISignInHandler handler, FirebaseSdkConfig config) {
+    public async ValueTask SignInFacebook(ISignInHandler handler, FirebaseSdkConfig config) {
         var module = await importModule.Value;
         using var jsRef = DotNetObjectReference.Create(handler);
-        await module.InvokeVoidAsync("signin", jsRef, config);
+        await module.InvokeVoidAsync("signInFacebook", jsRef, config);
+    }
+
+    public async ValueTask SignInGoogle(ISignInHandler handler, FirebaseSdkConfig config) {
+        var module = await importModule.Value;
+        using var jsRef = DotNetObjectReference.Create(handler);
+        await module.InvokeVoidAsync("signInGoogle", jsRef, config);
     }
 
     public async ValueTask SignInWithEmail(ISignInHandler handler, FirebaseSdkConfig config, string email, string password) {
         var module = await importModule.Value;
         using var jsRef = DotNetObjectReference.Create(handler);
-        await module.InvokeVoidAsync("signinPassword", jsRef, config, email, password);
+        await module.InvokeVoidAsync("signInPassword", jsRef, config, email, password);
     }
 
     public async ValueTask SignUpWithEmail(ISignInHandler handler, FirebaseSdkConfig config, string email, string password) {
