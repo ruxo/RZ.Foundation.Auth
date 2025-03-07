@@ -38,7 +38,7 @@
     }
 
     ClaimsPrincipal? DecodeSignInInfo(string infoText) {
-        var (ex, user) = Try(AuthService, s => s.DecodeSignIn(infoText));
+        var (ex, user) = Try(AuthService, s => FirebaseAuthService.DecodeSignIn(infoText));
         if (ex is not null){
             Logger.LogWarning(ex, "Trying to login with a corrupted Sign-in information. This may be normal if happened after the service is just restarted. Info: [{Info}]", infoText);
             return null;

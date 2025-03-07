@@ -1,16 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.IO.Compression;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using RZ.AspNet.Helper;
+using RZ.Foundation.Blazor.Auth.Helpers;
 using RZ.Foundation.Helpers;
 using Uri = TiraxTech.Uri;
 
@@ -22,43 +19,52 @@ public class FirebaseAuthService
     readonly Uri issuer;
     readonly SecurityKey[] firebaseKeys;
 
-    static readonly Aes Aes = Encryption.CreateAes(Encryption.RandomAesKey(), Encryption.NonceFromASCII("RZ Auth's nonce ja"));
-
     public FirebaseAuthService(ILogger<FirebaseAuthService> logger, IConfiguration configuration) {
         this.logger = logger;
-        var firebaseConnectionString = configuration.GetConnectionString("Firebase") ?? logger.FailWith<string>("Missing Firebase connection string");
-        var kv = KeyValueString.Parse(firebaseConnectionString);
 
-        Config = new FirebaseSdkConfig(kv["apiKey"], kv["authDomain"], kv["projectId"], kv["storageBucket"], kv["messagingSenderId"], kv["appId"], kv["measurementId"]);
+        try{
+            var firebaseConnectionString = configuration.GetConnectionString("Firebase")!;
+            var kv = KeyValueString.Parse(firebaseConnectionString);
 
-        issuer = BaseIssuer.ChangePath(Config.projectId);
-        var (error, keys) = Try(issuer, GetFirebaseAuthSecurityKeys);
-        if (error is not null)
-            logger.FailWith<string>($"Cannot get security keys from Firebase: {error}");
+            Config = new FirebaseSdkConfig(kv["apiKey"], kv["authDomain"], kv["projectId"], kv["storageBucket"], kv["messagingSenderId"], kv["appId"], kv["measurementId"]);
 
-        firebaseKeys = keys.ToArray();
+            var fbAdmin = configuration.GetConnectionString("FirebaseAdmin")!;
+            kv = KeyValueString.Parse(fbAdmin);
+            ServiceAccount = new(kv["serviceAccount"], kv["privateKey"]);
+
+            issuer = BaseIssuer.ChangePath(Config.projectId);
+
+            firebaseKeys = GetFirebaseAuthSecurityKeys(issuer).ToArray();
+        }
+        catch (Exception e){
+            logger.LogError(e, "Failed to initialize Firebase authentication service");
+            throw;
+        }
     }
 
     public FirebaseSdkConfig Config { get; }
+    public ServiceAccountInfo ServiceAccount { get; }
+
+    public readonly record struct ServiceAccountInfo(string Email, string PrivateKey);
 
     #region Encoding/Decoding
 
     readonly record struct SerializableClaim(string T, string V, string Y, string O);
     readonly record struct SerializableIdentity(IEnumerable<SerializableClaim> C, string? A);
 
-    public string EncodeSignIn(ClaimsPrincipal user) {
+    public static string EncodeSignIn(ClaimsPrincipal user) {
         var serializable = from identity in user.Identities
                            select new SerializableIdentity(from claim in identity.Claims
                                                            select new SerializableClaim(claim.Type, claim.Value, claim.ValueType, claim.OriginalIssuer),
                                                            identity.AuthenticationType);
         var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(serializable));
         var compressed = DeflateCompress(bytes);
-        var encrypt = Aes.Encrypt(compressed);
+        var encrypt = LibEncryption.Encrypt(compressed);
         return Convert.ToBase64String(encrypt);
     }
 
-    public ClaimsPrincipal DecodeSignIn(string encoded) {
-        var decoded = Encoding.UTF8.GetString(DeflateDecompress(Aes.Decrypt(Convert.FromBase64String(encoded))));
+    public static ClaimsPrincipal DecodeSignIn(string encoded) {
+        var decoded = Encoding.UTF8.GetString(DeflateDecompress(LibEncryption.Decrypt(Convert.FromBase64String(encoded))));
         var serializable = JsonSerializer.Deserialize<IEnumerable<SerializableIdentity>>(decoded);
         return new ClaimsPrincipal(from identity in serializable
                                    select new ClaimsIdentity(from claim in identity.C
@@ -84,7 +90,7 @@ public class FirebaseAuthService
 
     #endregion
 
-    public async ValueTask LoginSuccess(NavigationManager navManager, FirebaseJsInterop js, ClaimsPrincipal user, string? returnUrl) {
+    public static async ValueTask LoginSuccess(NavigationManager navManager, FirebaseJsInterop js, ClaimsPrincipal user, string? returnUrl) {
         var encoded = EncodeSignIn(user);
         await js.StoreAfterSignIn(encoded);
         var query = returnUrl is null ? string.Empty : $"?ReturnUrl={HttpUtility.UrlEncode(returnUrl)}";
@@ -122,10 +128,6 @@ public class FirebaseAuthService
         return new ClaimsPrincipal([result.ClaimsIdentity, fbIdentity]);
     }
 
-    static IEnumerable<SecurityKey> GetFirebaseAuthSecurityKeys(Uri issuer) {
-        var cm = new ConfigurationManager<OpenIdConnectConfiguration>(issuer.ChangePath(".well-known/openid-configuration").ToString(),
-                                                                      new OpenIdConnectConfigurationRetriever());
-        var openIdConfig = cm.GetConfigurationAsync().Result;
-        return openIdConfig.SigningKeys;
-    }
+    static IEnumerable<SecurityKey> GetFirebaseAuthSecurityKeys(Uri issuer)
+        => issuer.GetOidcWellKnownConfig().Result.SigningKeys;
 }

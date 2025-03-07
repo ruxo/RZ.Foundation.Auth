@@ -2,6 +2,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     FacebookAuthProvider,
     GoogleAuthProvider,
+    signInWithCustomToken,
     signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
 
 /**
@@ -55,11 +56,11 @@ export function signInPassword(output, config, email, password) {
     })
 }
 
-export async function signInWithProvider(output, config, providerType, type) {
+export function signInWithProvider(output, config, providerType, type) {
     return signInWith(output, config, async (auth) => {
         const provider = new providerType();
         const result = await signInWithPopup(auth, provider);
-        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const credential = providerType.credentialFromResult(result);
         const user = result.user;
         const info = {
             type,
@@ -76,15 +77,15 @@ export async function signInWithProvider(output, config, providerType, type) {
     })
 }
 
-export async function signInGoogle(output, config) {
+export function signInGoogle(output, config) {
     return signInWithProvider(output, config, GoogleAuthProvider, "google");
 }
 
-export async function signInFacebook(output, config) {
+export function signInFacebook(output, config) {
     return signInWithProvider(output, config, FacebookAuthProvider, "facebook");
 }
 
-export async function signUpPassword(output, config, email, password){
+export function signUpPassword(output, config, email, password){
     return signInWith(output, config, async (auth) => {
         const result = await createUserWithEmailAndPassword(auth, email, password);
         const user = result.user;
@@ -92,6 +93,26 @@ export async function signUpPassword(output, config, email, password){
             type: "password",
             accessToken: user.accessToken,
             refToken: null   // Firebase password uses OAuth so there is no ID token
+        }
+        if (!!user.stsTokenManager) {
+            info.refresh = {
+                token: user.stsTokenManager.refreshToken,
+                expires: user.stsTokenManager.expirationTime
+            }
+        }
+        return info;
+    })
+}
+
+export function signInWithJwt(output, config, token){
+    return signInWith(output, config, async (auth) => {
+        const result = await signInWithCustomToken(auth, token);
+        console.log(result)
+        const user = result.user;
+        const info = {
+            type: "custom",
+            accessToken: user.accessToken,
+            refToken: token
         }
         if (!!user.stsTokenManager) {
             info.refresh = {

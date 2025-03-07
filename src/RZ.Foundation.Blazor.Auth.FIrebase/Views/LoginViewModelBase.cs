@@ -51,12 +51,19 @@ public partial class LoginViewModelBase(VmToolkit tool, NavigationManager nav, F
         }
     }
 
-    public string? ReturnUrl { get; set; }
+    public string? ReturnUrl
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    }
 
     protected FirebaseAuthService AuthService { get; } = authService;
+    protected NavigationManager Nav => nav;
 
     [JSInvokable]
     public void AfterSignIn(bool success, SignInInfo? info, string? error) {
+        if (error is not null)
+            Logger.LogWarning("Firebase sign in failed: {Error}", error);
 
         AfterSignInInfo = success                                 ? info!
                           : IsFirebaseAuthError(error!) is { } fe ? new ErrorInfo(fe) : new ErrorInfo(StandardErrorCodes.Unhandled, error!);
@@ -118,7 +125,7 @@ public partial class LoginViewModelBase(VmToolkit tool, NavigationManager nav, F
                         break;
 
                     case AfterSignInCheck.LoginSuccess login:
-                        await AuthService.LoginSuccess(nav, js, login.User, ReturnUrl);
+                        await FirebaseAuthService.LoginSuccess(nav, js, login.User, ReturnUrl);
                         break;
 
                     default:

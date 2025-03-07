@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RZ.AspNet;
 using RZ.Foundation.Blazor.Auth.Views;
+using RZ.Foundation.Blazor.Auth.Views.Line;
 
 namespace RZ.Foundation.Blazor.Auth;
 
@@ -28,6 +29,7 @@ public static class FirebaseAuthentication
             });
 
         services.AddHttpClient("FirebaseAuth_GoogleIdentity", http => http.BaseAddress = new Uri("https://identitytoolkit.googleapis.com/"));
+        services.AddHttpClient<LineAuthViewModel>();
 
         services.AddTransient<FirebaseJsInterop>()
                 .AddScoped<LoginViewModel>()

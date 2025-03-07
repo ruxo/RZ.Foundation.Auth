@@ -1,17 +1,21 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace RZ.Foundation.Blazor.Auth.Views;
 
 [UsedImplicitly]
-partial class SignUp
+partial class SignUp(NavigationManager nav)
 {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
     protected override void OnParametersSet() {
         ViewModel!.ReturnUrl = ReturnUrl;
         base.OnParametersSet();
+    }
+
+    void RedirectToLineLogin() {
+        // Prevent double refresh due to ... framework's bug??
+        nav.NavigateTo("/line/login", forceLoad: true);
     }
 }
 

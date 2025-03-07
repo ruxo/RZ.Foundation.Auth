@@ -30,6 +30,12 @@ public class FirebaseJsInterop(IJSRuntime js) : IAsyncDisposable
         await module.InvokeVoidAsync("signInGoogle", jsRef, config);
     }
 
+    public async ValueTask SignInCustomJwt(ISignInHandler handler, FirebaseSdkConfig config, string jwt) {
+        var module = await importModule.Value;
+        using var jsRef = DotNetObjectReference.Create(handler);
+        await module.InvokeVoidAsync("signInWithJwt", jsRef, config, jwt);
+    }
+
     public async ValueTask SignInWithEmail(ISignInHandler handler, FirebaseSdkConfig config, string email, string password) {
         var module = await importModule.Value;
         using var jsRef = DotNetObjectReference.Create(handler);

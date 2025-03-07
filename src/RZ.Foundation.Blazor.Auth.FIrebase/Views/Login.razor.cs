@@ -31,6 +31,11 @@ partial class Login(IJSRuntime js, NavigationManager nav)
         }
         await base.OnAfterRenderAsync(firstRender);
     }
+
+    void RedirectToLineLogin() {
+        // Prevent double refresh due to ... framework's bug??
+        nav.NavigateTo("/line/login", forceLoad: true);
+    }
 }
 
 public class LoginViewModel(VmToolkit<LoginViewModel> tool, NavigationManager nav, FirebaseAuthService authService)

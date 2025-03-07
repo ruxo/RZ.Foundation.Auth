@@ -39,7 +39,7 @@
                         <MudText Typo="Typo.button" Class="ms-2">Google</MudText>
                     </MudButton>
                     <MudButton Style="border-color:var(--mud-palette-lines-default)" Variant="Variant.Outlined" Color="Color.Inherit" Disabled="ViewModel!.IsAuthenticating"
-                               OnClick="@ViewModel!.SignInWithFacebook">
+                               OnClick="@RedirectToLineLogin">
                         <MudIcon Icon="@ProviderIcons.Line" />
                         <MudText Typo="Typo.button" Class="ms-2">LINE</MudText>
                     </MudButton>
