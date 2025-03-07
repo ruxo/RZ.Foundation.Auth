@@ -105,7 +105,7 @@ public sealed class LineAuthViewModel(VmToolkit<LineAuthViewModel> tool, IConfig
 
             var newToken = jwt.WriteToken(newJwt);
 
-            await SignInWith(js => js.SignInCustomJwt(this, AuthService.Config, newToken));
+            await SignInWith(js => js.SignInCustomJwt(this, AuthService.Config, "line", newToken));
         }
         else{
             var responseText = await response.Content.ReadAsStringAsync();

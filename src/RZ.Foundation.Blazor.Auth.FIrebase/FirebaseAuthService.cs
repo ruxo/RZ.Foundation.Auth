@@ -121,7 +121,10 @@ public class FirebaseAuthService
             return null;
         }
 
-        var fbIdentity = new ClaimsIdentity([new Claim("access_token", signInInfo.AccessToken)], FirebaseAuthentication.Scheme);
+        var fbIdentity = new ClaimsIdentity([
+            new("access_token", signInInfo.AccessToken),
+            new("sign_in_provider", signInInfo.Type)
+        ], FirebaseAuthentication.Scheme);
         if (signInInfo.RefToken is not null)
             fbIdentity.AddClaim(new Claim("ref_token", signInInfo.RefToken));
 
