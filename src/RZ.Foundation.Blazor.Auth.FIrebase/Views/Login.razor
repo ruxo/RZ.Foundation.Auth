@@ -7,54 +7,62 @@
 <MudContainer MaxWidth="MaxWidth.ExtraSmall">
     <div class="card-container">
         <MudPaper Elevation="2" Class="rounded-xl pa-7">
-            <MudStack Spacing="5">
-                <div>
-                    @if (ViewModel!.Title is { } title){
-                        <MudText Typo="ViewModel!.TitleTypo" Class="@ViewModel!.TitleClass">@title</MudText>
-                    }
-                    @if (ViewModel!.Subtitle is { } subtitle){
-                        <MudText Typo="ViewModel!.SubtitleTypo" Class="@ViewModel!.SubtitleClass">@subtitle</MudText>
-                    }
-                </div>
-                <MudTextField Variant="Variant.Filled" Immediate="true" @bind-Value="ViewModel!.Email" Label="Email"/>
+            <ViewStack Style="height: 100%">
+                <MudStack Spacing="5">
+                    <div>
+                        @if (ViewModel!.Title is { } title){
+                            <MudText Typo="ViewModel!.TitleTypo" Class="@ViewModel!.TitleClass">@title</MudText>
+                        }
+                        @if (ViewModel!.Subtitle is { } subtitle){
+                            <MudText Typo="ViewModel!.SubtitleTypo" Class="@ViewModel!.SubtitleClass">@subtitle</MudText>
+                        }
+                    </div>
+                    <MudTextField Variant="Variant.Filled" Immediate="true"
+                                  Disabled="ViewModel!.IsAuthenticating"
+                                  @bind-Value="ViewModel!.Email" Label="Email"/>
 
-                <div>
-                    <MudTextField Variant="Variant.Filled" Immediate="true" @bind-Value="ViewModel!.Password" Label="Password" InputType="InputType.Password"/>
-                    @if (ViewModel!.ForgotPasswordText is {} forgotText){
-                        <MudLink Typo="Typo.inherit" Color="Color.Secondary" Style="display:block;text-align:right" Href="/auth/password/reset">@forgotText</MudLink>
-                    }
-                </div>
+                    <div>
+                        <MudTextField Variant="Variant.Filled" Immediate="true"
+                                      Disabled="ViewModel!.IsAuthenticating"
+                                      @bind-Value="ViewModel!.Password" Label="Password" InputType="InputType.Password"/>
+                        @if (ViewModel!.ForgotPasswordText is { } forgotText){
+                            <MudLink Typo="Typo.inherit" Color="Color.Secondary" Style="display:block;text-align:right"
+                                     Disabled="ViewModel!.IsAuthenticating"
+                                     OnClick="@ViewModel!.ForgetPassword">@forgotText</MudLink>
+                        }
+                    </div>
 
-                <div style="display:flex;flex-direction:column;gap: 0.25rem">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating"
-                               StartIcon="@Icons.Material.Filled.Login" OnClick="@ViewModel!.SignInWithEmail">
-                        Login
-                    </MudButton>
-                    @if (ViewModel!.ErrorMessage is {} errorMessage){
-                        <MudAlert Severity="Severity.Error">@errorMessage</MudAlert>
-                    }
-                </div>
-                <div class="rz-middle-bar">
-                    <span class="rz-middle-bar-text">@ViewModel!.MiddleText</span>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:0.75rem;margin: 0.25rem 0">
-                    <MudButton Style="border-color:var(--mud-palette-lines-default)" Variant="Variant.Outlined" Color="Color.Inherit" Disabled="ViewModel!.IsAuthenticating"
-                               OnClick="@ViewModel!.SignInWithGoogle">
-                        <MudImage Width="24" Height="24" Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"/>
-                        <MudText Typo="Typo.button" Class="ms-2">Google</MudText>
-                    </MudButton>
-                    <MudButton Style="border-color:var(--mud-palette-lines-default)" Variant="Variant.Outlined" Color="Color.Inherit" Disabled="ViewModel!.IsAuthenticating"
-                               OnClick="@ViewModel!.RedirectToLineLogin">
-                        <MudIcon Icon="@ProviderIcons.Line" />
-                        <MudText Typo="Typo.button" Class="ms-2">LINE</MudText>
-                    </MudButton>
-                </div>
-                <div style="display: flex; flex-direction: row; justify-content: center">
-                    <MudText Typo="Typo.body2">@ViewModel!.NoAccountText</MudText>
-                    &nbsp;
-                    <MudLink Color="Color.Secondary" Typo="Typo.body2" Href="@ViewModel!.SignUpLink">@ViewModel!.SignUpText</MudLink>
-                </div>
-            </MudStack>
+                    <div style="display:flex;flex-direction:column;gap: 0.25rem">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="ViewModel!.IsAuthenticating"
+                                   StartIcon="@Icons.Material.Filled.Login" OnClick="@ViewModel!.SignInWithEmail">
+                            Login
+                        </MudButton>
+                        @if (ViewModel!.ErrorMessage is { } errorMessage){
+                            <MudAlert Severity="Severity.Error">@errorMessage</MudAlert>
+                        }
+                    </div>
+                    <div class="rz-middle-bar">
+                        <span class="rz-middle-bar-text">@ViewModel!.MiddleText</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:0.75rem;margin: 0.25rem 0">
+                        <MudButton Style="border-color:var(--mud-palette-lines-default)" Variant="Variant.Outlined" Color="Color.Inherit" Disabled="ViewModel!.IsAuthenticating"
+                                   OnClick="@ViewModel!.SignInWithGoogle">
+                            <MudImage Width="24" Height="24" Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"/>
+                            <MudText Typo="Typo.button" Class="ms-2">Google</MudText>
+                        </MudButton>
+                        <MudButton Style="border-color:var(--mud-palette-lines-default)" Variant="Variant.Outlined" Color="Color.Inherit" Disabled="ViewModel!.IsAuthenticating"
+                                   OnClick="@ViewModel!.RedirectToLineLogin">
+                            <MudIcon Icon="@ProviderIcons.Line"/>
+                            <MudText Typo="Typo.button" Class="ms-2">LINE</MudText>
+                        </MudButton>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: center">
+                        <MudText Typo="Typo.body2">@ViewModel!.NoAccountText</MudText>
+                        &nbsp;
+                        <MudLink Color="Color.Secondary" Typo="Typo.body2" Href="@ViewModel!.SignUpLink">@ViewModel!.SignUpText</MudLink>
+                    </div>
+                </MudStack>
+            </ViewStack>
         </MudPaper>
 
         <footer class="mt-6 rz-text-center">

@@ -12,6 +12,7 @@
     <PackageVersion Include="MinVer" Version="6.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.2" />
     <PackageVersion Include="ReactiveUI.Blazor" Version="20.1.63" />
+    <PackageVersion Include="RZ.Foundation.Validation" Version="0.0.3" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.6.0" />
     <PackageVersion Include="TiraxTech.Uri" Version="2.2.0" />

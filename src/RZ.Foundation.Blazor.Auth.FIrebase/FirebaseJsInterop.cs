@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using LanguageExt;
 using Microsoft.JSInterop;
 
 namespace RZ.Foundation.Blazor.Auth;
@@ -51,6 +52,12 @@ public class FirebaseJsInterop(IJSRuntime js) : IAsyncDisposable
     public async ValueTask StoreAfterSignIn(string encoded) {
         var module = await importModule.Value;
         await module.InvokeVoidAsync("storeAfterSignIn", encoded);
+    }
+
+    public async Task<Outcome<Unit>> SendPasswordResetEmail(FirebaseSdkConfig config, string email) {
+        var module = await importModule.Value;
+        var error = await module.InvokeAsync<string?>("resetPassword", config, email);
+        return error is null? unit : new ErrorInfo(StandardErrorCodes.InvalidRequest, error);
     }
 
     public async ValueTask InstallExpirationTimer(DateTimeOffset expiration, int timeToShowMilliseconds) {

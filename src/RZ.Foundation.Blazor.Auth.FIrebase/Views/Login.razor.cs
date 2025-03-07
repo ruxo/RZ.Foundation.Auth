@@ -1,7 +1,7 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
+using RZ.Foundation.Blazor.Auth.Views.Line;
 
 namespace RZ.Foundation.Blazor.Auth.Views;
 
@@ -55,5 +55,9 @@ public class LoginViewModel(VmToolkit<LoginViewModel> tool, NavigationManager na
     public async Task SignInWithEmail() {
         if (ValidateEmailAndPassword("login") is { } x)
             await SignInWith(js => js.SignInWithEmail(this, AuthService.Config, x.Email, x.Password));
+    }
+
+    public void ForgetPassword() {
+        Shell.PushModal(Services.Create<PasswordResetViewModel>(Optional(Email)));
     }
 }

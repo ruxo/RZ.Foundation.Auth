@@ -3,6 +3,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
     FacebookAuthProvider,
     GoogleAuthProvider,
     signInWithCustomToken,
+    sendEmailVerification, sendPasswordResetEmail,
     signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
 
 /**
@@ -122,6 +123,22 @@ export function signInWithJwt(output, config, type, token){
         }
         return info;
     })
+}
+
+export async function verifyEmail(config, email){
+    const auth = getFbAuth(config);
+    await sendEmailVerification(auth.currentUser);
+}
+
+export async function resetPassword(config, email){
+    const auth = getFbAuth(config);
+    try{
+        await sendPasswordResetEmail(auth, email);
+        return null;
+    }
+    catch(error){
+        return error.toString();
+    }
 }
 
 let internalTimerId = null
