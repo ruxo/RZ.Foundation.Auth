@@ -30,8 +30,8 @@
     position: relative;
     z-index: 10;
     padding: 0 0.5rem;
-    color: hsl(240 3.8 46.1);
-    background-color: hsl(0 0 100);
+    color: var(--mud-palette-drawer-icon);
+    background-color: var(--mud-palette-surface);
 }
 
 .rz-text-center {
