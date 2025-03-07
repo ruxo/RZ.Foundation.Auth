@@ -46,8 +46,4 @@ public static class UserExtension
     [Pure]
     public static string? GetIdentityProviderId(this ClaimsPrincipal principal)
         => principal.Claims.FindValueByPriority(JwtRegisteredClaimNames.Sub, ClaimTypes.NameIdentifier);
-
-    [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string? FindFirstValue(this ClaimsPrincipal principal, string claimType)
-        => principal.FindFirst(claimType)?.Value;
 }

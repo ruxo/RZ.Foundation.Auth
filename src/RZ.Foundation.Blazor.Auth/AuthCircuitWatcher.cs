@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Server.Circuits;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Http;
 
 namespace RZ.Foundation.Blazor.Auth;
