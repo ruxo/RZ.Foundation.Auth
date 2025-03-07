@@ -4,18 +4,13 @@ using MudBlazor;
 namespace RZ.Foundation.Blazor.Auth.Views;
 
 [UsedImplicitly]
-partial class SignUp(NavigationManager nav)
+partial class SignUp
 {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
     protected override void OnParametersSet() {
         ViewModel!.ReturnUrl = ReturnUrl;
         base.OnParametersSet();
-    }
-
-    void RedirectToLineLogin() {
-        // Prevent double refresh due to ... framework's bug??
-        nav.NavigateTo("/line/login", forceLoad: true);
     }
 }
 

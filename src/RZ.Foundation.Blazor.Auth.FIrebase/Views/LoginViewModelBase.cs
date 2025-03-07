@@ -97,6 +97,11 @@ public partial class LoginViewModelBase(VmToolkit tool, NavigationManager nav, F
     public Task SignInWithGoogle()
         => SignInWith(js => js.SignInGoogle(this, AuthService.Config));
 
+    public void RedirectToLineLogin() {
+        // Prevent double refresh due to ... framework's bug??
+        nav.NavigateTo($"/line/login?ReturnUrl={ReturnUrl ?? "/"}", forceLoad: true);
+    }
+
     protected async Task SignInWith(Func<FirebaseJsInterop, ValueTask> signInTask, [CallerMemberName] string method = "") {
         Logger.LogDebug("Login with {ReturnUrl}", ReturnUrl);
         IsAuthenticating = true;

@@ -15,8 +15,6 @@ partial class LineLogin(ILogger<LineLogin> logger, TimeProvider clock, IConfigur
     [CascadingParameter] public required HttpContext HttpContext { get; set; }
 
     protected override async Task OnParametersSetAsync() {
-        Console.WriteLine($"Context: {HttpContext}");
-
         var returnUrl = ReturnUrl ?? "/";
         if (LineLoginConfig.From(configuration) is not { } lineAuthConfig){
             logger.LogWarning("No LineAuth config found");
@@ -26,7 +24,6 @@ partial class LineLogin(ILogger<LineLogin> logger, TimeProvider clock, IConfigur
         var oidc = await lineAuthConfig.Authority.GetOidcWellKnownConfig();
 
         var state = LineUtils.EncodeState(lineAuthConfig.ClientId, returnUrl, clock.GetUtcNow());
-        Console.WriteLine($"Request state: {state}");
         var authorizeEndpoint = Uri.From(oidc.AuthorizationEndpoint)
                                    .UpdateQueries([
                                         ("response_type", "code"),

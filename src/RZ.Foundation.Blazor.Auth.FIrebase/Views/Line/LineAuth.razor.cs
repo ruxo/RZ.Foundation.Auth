@@ -32,6 +32,12 @@ public readonly record struct OidcResponse(string? Code, string? Error, string S
 public sealed class LineAuthViewModel(VmToolkit<LineAuthViewModel> tool, IConfiguration configuration, TimeProvider clock, NavigationManager nav, FirebaseAuthService authService, HttpClient http, OidcResponse parameters)
     : LoginViewModelBase(tool, nav, authService)
 {
+    public ViewStatus Status
+    {
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = ViewStatus.Loading.Instance;
+
     public async Task Validate() {
         ReturnUrl = "/";
 
@@ -48,6 +54,7 @@ public sealed class LineAuthViewModel(VmToolkit<LineAuthViewModel> tool, IConfig
             Logger.LogWarning("LINE callback is called with an invalid client id: {State}", state);
             return;
         }
+        Console.WriteLine($"Redirect to {ReturnUrl}");
 
         Time diff = clock.GetUtcNow() - state.Timestamp;
         if (diff > 20.Seconds()){

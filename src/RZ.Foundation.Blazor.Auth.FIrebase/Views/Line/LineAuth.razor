@@ -5,5 +5,7 @@
 
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-<MudText>Authentication failed. Please try again.</MudText>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@ViewModel!.ReturnUrl">Back</MudButton>
+@if (ViewModel!.Status is ViewStatus.Failed){
+    <MudText>Authentication failed. Please try again.</MudText>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="@ViewModel!.ReturnUrl">Back</MudButton>
+}
