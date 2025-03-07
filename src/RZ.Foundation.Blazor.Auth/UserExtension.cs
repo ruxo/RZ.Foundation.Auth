@@ -44,7 +44,7 @@ public static class UserExtension
         => principal.FindFirstValue("picture");
 
     [Pure]
-    public static string? GetUserId(this ClaimsPrincipal principal)
+    public static string? GetIdentityProviderId(this ClaimsPrincipal principal)
         => principal.Claims.FindValueByPriority(JwtRegisteredClaimNames.Sub, ClaimTypes.NameIdentifier);
 
     [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
