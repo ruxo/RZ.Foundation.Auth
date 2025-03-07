@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		Directory.Packages.props = Directory.Packages.props
+		build.ps1 = build.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{67D9E8DF-8AF0-4C4D-BE27-703AA79B9B4D}"
@@ -19,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Firebase", "examples
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Auth0", "examples\Blazor.Auth0\Blazor.Auth0.csproj", "{612248A9-F899-4C42-B9B7-2F38B4636549}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RZ.Foundation.Blazor.Auth0", "src\RZ.Foundation.Blazor.Auth0\RZ.Foundation.Blazor.Auth0.csproj", "{25B88183-5EC6-476C-8D6B-A6D9A4EC0778}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RZ.Foundation.Blazor.Auth.Auth0", "src\RZ.Foundation.Blazor.Auth.Auth0\RZ.Foundation.Blazor.Auth.Auth0.csproj", "{25B88183-5EC6-476C-8D6B-A6D9A4EC0778}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RZ.Foundation.Blazor.Auth", "src\RZ.Foundation.Blazor.Auth\RZ.Foundation.Blazor.Auth.csproj", "{938D41D2-8C9B-4D46-97C9-D235EB51F4AF}"
 EndProject

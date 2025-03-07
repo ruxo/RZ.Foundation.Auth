@@ -9,13 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RZ.AspNet;
-using RZ.Foundation.Blazor.Auth;
 using RZ.Foundation.Extensions;
 using RZ.Foundation.Helpers;
 using RZ.Foundation.Types;
 using TiraxTech;
 
-namespace RZ.Foundation.Blazor.Auth0;
+namespace RZ.Foundation.Blazor.Auth.Auth0;
 
 public static class AUth0Authentication
 {

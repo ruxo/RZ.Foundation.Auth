@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
 using RZ.Foundation;
 using RZ.Foundation.Blazor.Auth;
+using RZ.Foundation.Blazor.Auth.Auth0;
 using RZ.Foundation.Blazor.Auth0;
 
 var builder = WebApplication.CreateBuilder(args);

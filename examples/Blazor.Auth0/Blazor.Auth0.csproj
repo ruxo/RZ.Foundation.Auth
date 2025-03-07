@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+      <IsPackable>false</IsPackable>
   </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\RZ.Foundation.Blazor.Auth.Firebase\RZ.Foundation.Blazor.Auth.Firebase.csproj" />
-      <ProjectReference Include="..\..\src\RZ.Foundation.Blazor.Auth0\RZ.Foundation.Blazor.Auth0.csproj" />
+      <ProjectReference Include="..\..\src\RZ.Foundation.Blazor.Auth.Auth0\RZ.Foundation.Blazor.Auth.Auth0.csproj" />
     </ItemGroup>
 
 </Project>
