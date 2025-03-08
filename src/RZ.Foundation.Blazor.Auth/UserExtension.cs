@@ -1,13 +1,16 @@
-﻿using System.Diagnostics.Contracts;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
+using JetBrains.Annotations;
 using RZ.Foundation.Helpers;
+using PureAttribute = System.Diagnostics.Contracts.PureAttribute;
 
 namespace RZ.Foundation.Blazor.Auth;
 
+[PublicAPI]
 public static class UserExtension
 {
+    [Pure]
     public static bool IsAuthenticated(this ClaimsPrincipal principal)
         => principal.Identities.Any(i => i.IsAuthenticated);
 
@@ -25,8 +28,11 @@ public static class UserExtension
 
     [Pure]
     public static string GetEmail(this ClaimsPrincipal principal)
-        => principal.FindFirstValue(ClaimTypes.Email) ??
-           throw new InvalidOperationException($"Email not found in claims of user {principal.GetName()}.");
+        => principal.TryGetEmail() ?? throw new InvalidOperationException($"Email not found in claims of user {principal.GetName()}.");
+
+    [Pure]
+    public static string? TryGetEmail(this ClaimsPrincipal principal)
+        => principal.FindFirstValue(ClaimTypes.Email);
 
     [Pure]
     public static string GetName(this ClaimsPrincipal principal)
@@ -40,10 +46,10 @@ public static class UserExtension
                          .ToArray());
 
     [Pure]
-    public static string? GetPicture(this ClaimsPrincipal principal)
+    public static string? TryGetPicture(this ClaimsPrincipal principal)
         => principal.FindFirstValue("picture");
 
     [Pure]
-    public static string? GetIdentityProviderId(this ClaimsPrincipal principal)
+    public static string? TryGetIdentityProviderId(this ClaimsPrincipal principal)
         => principal.Claims.FindValueByPriority(JwtRegisteredClaimNames.Sub, ClaimTypes.NameIdentifier);
 }

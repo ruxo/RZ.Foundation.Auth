@@ -31,9 +31,12 @@ public static class FirebaseAuthentication
         services.AddHttpClient("FirebaseAuth_GoogleIdentity", http => http.BaseAddress = new Uri("https://identitytoolkit.googleapis.com/"));
         services.AddHttpClient<LineAuthViewModel>();
 
-        services.AddTransient<FirebaseJsInterop>()
-                .AddScoped<LoginViewModel>()
-                .AddScoped<SignUpViewModel>();
+        services.AddTransient<FirebaseJsInterop>();
+
+        if (services.All(x => x.ServiceType != typeof(LoginViewModel)))
+            services.AddScoped<LoginViewModel>();
+        if (services.All(x => x.ServiceType != typeof(SignUpViewModel)))
+            services.AddScoped<SignUpViewModel>();
 
         return services;
     }

@@ -108,7 +108,6 @@ export function signUpPassword(output, config, email, password){
 export function signInWithJwt(output, config, type, token){
     return signInWith(output, config, async (auth) => {
         const result = await signInWithCustomToken(auth, token);
-        console.log(result)
         const user = result.user;
         const info = {
             type,

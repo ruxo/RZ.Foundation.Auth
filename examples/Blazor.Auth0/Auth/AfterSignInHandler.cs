@@ -14,7 +14,7 @@ public class AfterSignInHandler : IAfterSignInHandler
     public async ValueTask<AfterSignInCheck> ProceedAfterSignInFlow(ClaimsPrincipal user) {
         Console.WriteLine($"Check user {user.Identity?.Name} for registration flow.");
 
-        var userId = user.GetIdentityProviderId() ?? throw new InvalidOperationException("User ID not found.");
+        var userId = user.TryGetIdentityProviderId() ?? throw new InvalidOperationException("User ID not found.");
         if (!RegisteredUser.Add(userId))
             return new AfterSignInCheck.LoginSuccess(user);
 
