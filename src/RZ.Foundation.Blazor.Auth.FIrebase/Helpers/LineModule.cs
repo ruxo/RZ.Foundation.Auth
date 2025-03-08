@@ -38,7 +38,8 @@ public static class LineModule
         var token = (JwtSecurityToken)jwt.ReadToken(idToken);
         var claims = token.Claims.ToList();
 
-        using var rsa = RSA.Create();
+        // FUTURE: Investigate why RSA instance cannot be disposed. If disposed, the second use will fail with `ObjectDisposedException`
+        var rsa = RSA.Create();
         rsa.ImportFromPem(authService.ServiceAccount.PrivateKey);
 
         var signingKey = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
@@ -65,6 +66,7 @@ public static class LineModule
             SigningCredentials = signingKey
         };
         var newJwt = jwt.CreateToken(newJwtDescriptor);
-        return jwt.WriteToken(newJwt);
+        var result = jwt.WriteToken(newJwt);
+        return result;
     }
 }
