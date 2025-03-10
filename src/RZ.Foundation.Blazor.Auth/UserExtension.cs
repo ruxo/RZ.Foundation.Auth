@@ -4,6 +4,7 @@ using System.Security.Claims;
 using JetBrains.Annotations;
 using RZ.Foundation.Helpers;
 using PureAttribute = System.Diagnostics.Contracts.PureAttribute;
+using static LanguageExt.Prelude;
 
 namespace RZ.Foundation.Blazor.Auth;
 
@@ -52,4 +53,12 @@ public static class UserExtension
     [Pure]
     public static string? TryGetIdentityProviderId(this ClaimsPrincipal principal)
         => principal.Claims.FindValueByPriority(JwtRegisteredClaimNames.Sub, ClaimTypes.NameIdentifier);
+
+    [Pure]
+    public static bool HasPermission(this ClaimsPrincipal user, string permission)
+        => Seq(user.Claims.Where(c => c.Type == RzClaimTypes.Permission)).Any(c => c.Value == permission);
+
+    [Pure]
+    public static bool HasPermissions(this ClaimsPrincipal user, params string[] permissions)
+        => Seq(user.Claims.Where(c => c.Type == RzClaimTypes.Permission)).Any(p => permissions.Contains(p.Value));
 }

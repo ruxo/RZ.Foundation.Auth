@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 
@@ -12,17 +11,13 @@ partial class Logout
     [CascadingParameter] HttpContext? StaticContext { get; set; }
 
     [Inject] public required IHttpContextAccessor HttpContextAccessor { get; set; }
-    [Inject] public required UserState UserState { get; set; }
     [Inject] public required NavigationManager NavManager { get; set; }
 
     protected override async Task OnInitializedAsync() {
         if (StaticContext is not null){
             await HttpContextAccessor.HttpContext!.SignOutAsync(FirebaseAuthentication.Scheme);
         }
-        else{
-            IAuthUserState authUserState = UserState;
-            authUserState.ClearAuthState();
+        else
             NavManager.NavigateTo(ReturnUrl ?? "/");
-        }
     }
 }

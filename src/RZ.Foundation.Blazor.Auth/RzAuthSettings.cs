@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace RZ.Foundation.Blazor.Auth;
@@ -14,8 +13,6 @@ public static class RzAuthSettings
             services.AddAuthorizationCore(authOptions);
         return services
               .AddHttpContextAccessor()
-              .AddScoped<UserState>()
-              .AddScoped<CircuitHandler, AuthCircuitWatcher>()
               .AddScoped<AuthenticationStateProvider, RzAuthStateProvider>()
               .AddScoped<RzAuthStateProvider>(sp => (RzAuthStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
     }

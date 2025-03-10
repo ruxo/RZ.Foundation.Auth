@@ -1,11 +1,8 @@
 ﻿@page "/redirect"
-@using System.Security.Claims
 
 @layout BlankLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
-@inject IHttpContextAccessor HttpAccessor
-@inject UserState UserState
 @inject ILogger<Redirect> Logger
 @inject NavigationManager NavManager
 
@@ -14,11 +11,6 @@
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
     protected override void OnInitialized() {
-        if (HttpAccessor.HttpContext?.User is {} user && !user.IsExpired(DateTimeOffset.UtcNow)){
-            IAuthUserState state = UserState;
-            state.SetAuthState(user, user.FindFirstValue("access_token"));
-        }
-
         var returnUrl = ReturnUrl ?? "/";
         Logger.LogDebug("Client Redirecting to {ReturnUrl}", returnUrl);
         NavManager.NavigateTo(returnUrl, forceLoad: true);
