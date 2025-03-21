@@ -18,6 +18,6 @@ partial class Logout
             await HttpContextAccessor.HttpContext!.SignOutAsync(FirebaseAuthentication.Scheme);
         }
         else
-            NavManager.NavigateTo(ReturnUrl ?? "/");
+            NavManager.NavigateTo(ReturnUrl ?? "/", forceLoad: true);
     }
 }
