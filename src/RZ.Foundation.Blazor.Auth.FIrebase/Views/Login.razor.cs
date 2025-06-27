@@ -36,6 +36,9 @@ partial class Login(IJSRuntime js, NavigationManager nav)
 public class LoginViewModel(VmToolkit<LoginViewModel> tool, NavigationManager nav, FirebaseAuthService authService)
     : LoginViewModelBase(tool, nav, authService)
 {
+    public bool UseEmailLogin { get; set; } = true;
+    public bool CanSignUp { get; set; } = true;
+
     public string? Title { get; set; } = "Login to your account";
     public Typo TitleTypo { get; set; } = Typo.h5;
     public string? TitleClass { get; set; } = "rz-text-center";

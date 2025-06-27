@@ -4,13 +4,21 @@ using MudBlazor;
 namespace RZ.Foundation.Blazor.Auth.Views;
 
 [UsedImplicitly]
-partial class SignUp
+partial class SignUp(NavigationManager nav, LoginViewModel loginVm)
 {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
     protected override void OnParametersSet() {
         ViewModel!.ReturnUrl = ReturnUrl;
         base.OnParametersSet();
+    }
+
+    protected override void OnInitialized() {
+        if (!loginVm.CanSignUp)
+            nav.NavigateTo("/");
+
+        if (!loginVm.UseEmailLogin)
+            nav.NavigateTo($"/auth/login?returnUrl={Uri.EscapeDataString(ReturnUrl ?? "/")}");
     }
 }
 

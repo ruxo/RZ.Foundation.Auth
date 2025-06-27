@@ -1,0 +1,62 @@
+= Firebase Authentication
+
+== Dependencies
+
+* Reactive UI
+* (JS) Firebase SDK
+* MudBlazor
+* RZ.Foundation.Blazor
+
+== Usage
+
+=== If not using, `RZ.AspNet.Bootstrapper`
+
+. Register Firebase authentication to the DI container:
+[source,csharp]
+----
+builder.Services.AddFirebaseAuthentication();
+----
+
+. Register the `FirebaseAuthentication` assembly to Razor pages
+[source,csharp]
+----
+app.MapRazorComponents<App>()
+   .AddAdditionalAssemblies(typeof(FirebaseAuthentication).Assembly)
+   .AddInteractiveServerRenderMode();
+----
+
+=== If using `RZ.AspNet.Bootstrapper`
+
+Just registering via the host building pipline. For example:
+
+[source,csharp]
+----
+await builder.RunPipeline(
+        CommonModules.ForwardHeaders(),
+        CommonModules.Localization(supportedCultures: ["en", "th"]),
+        RzBlazorModules.HandleBlazorErrors(),
+        CommonModules.EnforceHsts(),
+        CommonModules.AntiForgery(),
+        RzBlazorModules.ExposeMappedAssets(),
+
+        FirebaseAuthentication.Module(opts => {
+            opts.AddPolicy(ServicePermissions.Authenticated, policy => policy.RequireAuthenticatedUser());
+        }),
+        RzBlazorModules.UseBlazorServer<App>(typeof(FirebaseAuthentication).Assembly)
+    );
+----
+
+== Configurations
+
+3 keys are needed:
+
+[cols="1,4"]
+|===
+| `Firebase`
+| ได้มาจาก Project settings ใน Firebase
+
+  `"apiKey=(key);authDomain=(domain);projectId=(projectid);storageBucket=(bucket);messagingSenderId=(senderId);appId=(appid);measurementId=(ID)"`
+
+| `FirebaseAdmin` | `"serviceAccount=(account);privateKey={oneline key}"`
+| `LineAuth`      | `"Authority=https://access.line.me/;ClientId=(client id);ClientSecret=(secret)"`
+|===
