@@ -22,7 +22,7 @@ partial class SignUp(NavigationManager nav, LoginViewModel loginVm)
     }
 }
 
-public class SignUpViewModel(VmToolkit<SignUpViewModel> tool, NavigationManager nav, FirebaseAuthService authService)
+public class SignUpViewModel(VmToolkit<SignUpViewModel> tool, NavigationManager nav, FirebaseAuthService authService, LoginViewModel loginVm)
     : LoginViewModelBase(tool, nav, authService)
 {
     public string? Title { get; set; } = "Create an account";
@@ -36,6 +36,9 @@ public class SignUpViewModel(VmToolkit<SignUpViewModel> tool, NavigationManager 
     public string? LoginText { get; set; } = "Log in";
 
     public string LoginUrl => $"/auth/login?returnUrl={ReturnUrl ?? "/"}";
+
+    public bool UseGoogleLogin => loginVm.UseGoogleLogin;
+    public bool UseLineLogin => loginVm.UseLineLogin;
 
     public async Task SignUpWithEmail() {
         if (ValidateEmailAndPassword("login") is { } x)

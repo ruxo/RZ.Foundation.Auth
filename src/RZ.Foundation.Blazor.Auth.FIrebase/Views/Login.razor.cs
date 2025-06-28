@@ -38,6 +38,8 @@ public class LoginViewModel(VmToolkit<LoginViewModel> tool, NavigationManager na
 {
     public bool UseEmailLogin { get; set; } = true;
     public bool CanSignUp { get; set; } = true;
+    public bool UseGoogleLogin { get; set; } = true;
+    public bool UseLineLogin { get; set; } = true;
 
     public string? Title { get; set; } = "Login to your account";
     public Typo TitleTypo { get; set; } = Typo.h5;
