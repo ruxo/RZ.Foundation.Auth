@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -116,7 +117,7 @@ public partial class LoginViewModelBase(VmToolkit tool, NavigationManager nav, F
                 var result = user is null
                                  ? new AfterSignInCheck.Failed("Invalid token")
                                  : Services.GetService<IAfterSignInHandler>() is { } afterSignInHandler
-                                     ? await afterSignInHandler.ProceedAfterSignInFlow(user)
+                                     ? await TrapError(afterSignInHandler, user)
                                      : new AfterSignInCheck.LoginSuccess(user);
 
                 switch (result){
@@ -167,6 +168,16 @@ public partial class LoginViewModelBase(VmToolkit tool, NavigationManager nav, F
             IsAuthenticating = false;
             // TODO Display error
             ErrorMessage = e.Message;
+        }
+    }
+
+    async ValueTask<AfterSignInCheck> TrapError(IAfterSignInHandler handler, ClaimsPrincipal user) {
+        try{
+            return await handler.ProceedAfterSignInFlow(user);
+        }
+        catch (Exception e){
+            Logger.LogError(e, "Failed to proceed after sign in flow");
+            return new AfterSignInCheck.Failed("Internal Server Error");
         }
     }
 }
