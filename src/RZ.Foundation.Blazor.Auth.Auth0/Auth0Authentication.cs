@@ -32,7 +32,7 @@ public static class AUth0Authentication
                         opts.ForwardSignIn = "/auth/login";
                         opts.Domain = dict["Domain"];
                         opts.ClientId = dict["ClientId"];
-                        opts.ClientSecret = dict.Get("ClientSecret").ToNullable();
+                        opts.ClientSecret = dict.TryGetValue("ClientSecret").ToNullable();
 
                         opts.OpenIdConnectEvents = new OpenIdConnectEvents {
                             OnTokenValidated = async context => {
@@ -68,8 +68,8 @@ public static class AUth0Authentication
                             }
                         };
                     });
-        var accessConfig = from aud in dict.Get("Audience")
-                           from scope in dict.Get("Scope")
+        var accessConfig = from aud in dict.TryGetValue("Audience")
+                           from scope in dict.TryGetValue("Scope")
                            select new { aud, scope };
         if (accessConfig.IfSome(out var x))
             auth0Registration.WithAccessToken(opts => {

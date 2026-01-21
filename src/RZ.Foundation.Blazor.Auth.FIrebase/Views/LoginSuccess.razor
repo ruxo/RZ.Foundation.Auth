@@ -17,8 +17,7 @@
     protected override async Task OnInitializedAsync() {
         var httpContext = HttpContextAccessor.HttpContext;
         Debug.Assert(httpContext is not null);
-        var afterSignInInfo = httpContext.Request.Cookies["after-signin"];
-        var user = afterSignInInfo.Bind(DecodeSignInInfo);
+        var user = httpContext.Request.Cookies["after-signin"] is {} afterSignInInfo? DecodeSignInInfo(afterSignInInfo) : null;
 
         var returnUrl = ReturnUrl ?? "/";
         if (user is null)

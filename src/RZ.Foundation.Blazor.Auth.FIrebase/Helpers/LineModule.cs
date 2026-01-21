@@ -26,7 +26,7 @@ public static class LineModule
             if (response.IsSuccessStatusCode)
                 return new OpenIdConnectMessage(json);
             else
-                return new ErrorInfo(StandardErrorCodes.HttpError, json, data: new { response.StatusCode });
+                return new ErrorInfo(StandardErrorCodes.HttpError, json, data: ToJson(("StatusCode", response.StatusCode.ToString())));
         }
         catch (Exception e){
             return ErrorFrom.Exception(e);

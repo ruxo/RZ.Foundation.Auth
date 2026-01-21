@@ -1,19 +1,20 @@
 <Project>
   <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
+    <PackageVersion Include="Auth0.AspNetCore.Authentication" Version="1.6.1" />
     <PackageVersion Include="RZ.Foundation" Version="7.0.2" />
-    <PackageVersion Include="MinVer" Version="6.0.0" />
-    <PackageVersion Include="RZ.Foundation.Validation" Version="0.1.0" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.12.0" />
-    <PackageVersion Include="TiraxTech.Uri" Version="2.2.2" />
-    <PackageVersion Include="RZ.AspNet.Bootstrapper" Version="7.0.2" />
-    <PackageVersion Include="RZ.Foundation.Blazor.MudBlazor" Version="7.0.2" />
+    <PackageVersion Include="MinVer" Version="7.0.0" />
+    <PackageVersion Include="RZ.Foundation.Validation" Version="0.2.2" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.15.0" />
+    <PackageVersion Include="TiraxTech.Uri" Version="2.3.0" />
+    <PackageVersion Include="RZ.AspNet.Bootstrapper" Version="7.1.0" />
+    <PackageVersion Include="RZ.Foundation.Blazor.MudBlazor" Version="7.1.0" />
   </ItemGroup>
 </Project>

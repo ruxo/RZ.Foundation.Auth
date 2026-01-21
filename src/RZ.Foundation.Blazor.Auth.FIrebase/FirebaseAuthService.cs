@@ -115,9 +115,8 @@ public class FirebaseAuthService
             IssuerSigningKeys = firebaseKeys
         };
 
-        var (error, result) = await Try(tokenHandler.ValidateTokenAsync(signInInfo.AccessToken, validationParameters));
-        if (error is not null) {
-            logger.LogError(error, "Sign-in token validation failed! [{Token}]", signInInfo.AccessToken);
+        if (Fail(await TryCatch(tokenHandler.ValidateTokenAsync(signInInfo.AccessToken, validationParameters)), out var error, out var result)) {
+            logger.LogError("Sign-in token validation failed! [{Token}] {@Error}", signInInfo.AccessToken, error);
             return null;
         }
 
