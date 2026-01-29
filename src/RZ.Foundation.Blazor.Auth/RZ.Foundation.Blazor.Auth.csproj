@@ -6,10 +6,13 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="RZ.Foundation.Validation"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt"/>
         <PackageReference Include="TiraxTech.Uri"/>
         <PackageReference Include="RZ.AspNet.Bootstrapper"/>
         <PackageReference Include="RZ.Foundation.Blazor.MudBlazor"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RZ.Foundation.Auth\RZ.Foundation.Auth.csproj" />
     </ItemGroup>
 
 </Project>

@@ -14,6 +14,7 @@ function build {
 
 Push-Location ./src
 
+build .\RZ.Foundation.Auth
 build .\RZ.Foundation.Blazor.Auth
 build .\RZ.Foundation.Blazor.Auth.Firebase
 build .\RZ.Foundation.Blazor.Auth.Auth0

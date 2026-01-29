@@ -1,7 +1,7 @@
 ﻿<Solution>
   <Folder Name="/examples/">
-    <Project Path="examples\Blazor.Auth0\Blazor.Auth0.csproj" Type="Classic C#" />
-    <Project Path="examples\Blazor.Firebase\Blazor.Firebase.csproj" Type="Classic C#" />
+    <Project Path="examples\Blazor.Auth0\Blazor.Auth0.csproj" Type="C#" />
+    <Project Path="examples\Blazor.Firebase\Blazor.Firebase.csproj" Type="C#" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
@@ -9,8 +9,9 @@
     <File Path="build.ps1" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src\RZ.Foundation.Blazor.Auth.Auth0\RZ.Foundation.Blazor.Auth.Auth0.csproj" Type="Classic C#" />
-    <Project Path="src\RZ.Foundation.Blazor.Auth.Firebase\RZ.Foundation.Blazor.Auth.Firebase.csproj" Type="Classic C#" />
-    <Project Path="src\RZ.Foundation.Blazor.Auth\RZ.Foundation.Blazor.Auth.csproj" Type="Classic C#" />
+    <Project Path="src/RZ.Foundation.Auth/RZ.Foundation.Auth.csproj" />
+    <Project Path="src\RZ.Foundation.Blazor.Auth.Auth0\RZ.Foundation.Blazor.Auth.Auth0.csproj" Type="C#" />
+    <Project Path="src\RZ.Foundation.Blazor.Auth.Firebase\RZ.Foundation.Blazor.Auth.Firebase.csproj" Type="C#" />
+    <Project Path="src\RZ.Foundation.Blazor.Auth\RZ.Foundation.Blazor.Auth.csproj" Type="C#" />
   </Folder>
 </Solution>
