@@ -2,10 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using JetBrains.Annotations;
+using RZ.Foundation.Blazor.Auth;
 using RZ.Foundation.Helpers;
 using PureAttribute = System.Diagnostics.Contracts.PureAttribute;
 
-namespace RZ.Foundation.Blazor.Auth;
+namespace RZ.Foundation.Auth;
 
 [PublicAPI]
 public static class UserExtension
@@ -21,12 +22,12 @@ public static class UserExtension
             => principal.GetDateTime(JwtRegisteredClaimNames.Exp);
 
         [Pure, PublicAPI]
-        public string? FindFirstValue(string claimType)
+        public string? Get(string claimType)
             => principal.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
 
         [Pure, PublicAPI]
         public DateTimeOffset? GetDateTime(string key)
-            => principal.FindFirstValue(key) is { } value ? DateTimeOffset.FromUnixTimeSeconds(long.Parse(value)) : null;
+            => principal.Get(key) is { } value ? DateTimeOffset.FromUnixTimeSeconds(long.Parse(value)) : null;
 
         [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsExpired(DateTimeOffset now)
@@ -34,11 +35,11 @@ public static class UserExtension
 
         [Pure, PublicAPI]
         public string? GetEmail()
-            => principal.FindFirstValue(ClaimTypes.Email);
+            => principal.Get(ClaimTypes.Email);
 
         [Pure, PublicAPI]
         public string? GetName()
-            => principal.Identities.FirstOrDefault(i => i.Name is not null)?.Name ?? principal.FindFirstValue("name");
+            => principal.Identities.FirstOrDefault(i => i.Name is not null)?.Name ?? principal.Get("name");
 
         [Pure, PublicAPI]
         public string? GetShortName()

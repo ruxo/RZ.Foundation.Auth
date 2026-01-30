@@ -2,6 +2,7 @@
 using LanguageExt;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
+using RZ.Foundation.Auth;
 
 namespace RZ.Foundation.Blazor.Auth;
 

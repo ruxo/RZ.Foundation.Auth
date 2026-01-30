@@ -3,7 +3,7 @@ global using System.Reactive.Disposables.Fluent;
 
 global using JetBrains.Annotations;
 global using ReactiveUI;
-global using RZ.Foundation;
+global using RZ.Foundation.Auth;
 global using RZ.Foundation.Types;
 global using RZ.Foundation.Blazor.MVVM;
 
