@@ -6,7 +6,6 @@
 
 @inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager NavManager
-@inject FirebaseAuthService AuthService
 @inject ILogger<LoginSuccess> Logger
 
 @code {
@@ -37,9 +36,8 @@
     }
 
     ClaimsPrincipal? DecodeSignInInfo(string infoText) {
-        var (ex, user) = Try(AuthService, s => FirebaseAuthService.DecodeSignIn(infoText));
-        if (ex is not null){
-            Logger.LogWarning(ex, "Trying to login with a corrupted Sign-in information. This may be normal if happened after the service is just restarted. Info: [{Info}]", infoText);
+        if (Fail(FirebaseAuthService.DecodeSignIn(infoText), out var e, out var user)) {
+            Logger.LogWarning("Trying to login with a corrupted Sign-in information. This may be normal if happened after the service is just restarted. Info: [{InfoText}] => {@Error}", infoText, e);
             return null;
         }
         return user;

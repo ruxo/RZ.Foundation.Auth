@@ -23,7 +23,11 @@ partial class LineLogin(ILogger<LineLogin> logger, TimeProvider clock, IConfigur
         }
         var oidc = await lineAuthConfig.Authority.GetOidcWellKnownConfig();
 
-        var state = LineUtils.EncodeState(lineAuthConfig.ClientId, returnUrl, clock.GetUtcNow());
+        if (Fail(LineUtils.EncodeState(lineAuthConfig.ClientId, returnUrl, clock.GetUtcNow()), out var e, out var state)){
+            logger.LogError("Failed to encode state: {@Error}", e);
+            HttpContext.Response.Redirect(returnUrl);
+            return;
+        }
         var authorizeEndpoint = Uri.From(oidc.AuthorizationEndpoint)
                                    .UpdateQueries([
                                         ("response_type", "code"),

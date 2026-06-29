@@ -1,17 +1,17 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
+using RZ.Foundation.Helpers;
 
 namespace RZ.Foundation.Blazor.Auth.Helpers;
 
 public static class LibEncryption
 {
-    public static readonly Aes Aes = Encryption.CreateAes(Encryption.RandomAesKey(), Encryption.NonceFromASCII("RZ Auth's nonce ja"));
+    static readonly byte[] PassKey = Encryption.RandomAesKey();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static byte[] Encrypt(byte[] data)
-        => Aes.Encrypt(data);
+    public static Outcome<byte[]> Encrypt(byte[] data)
+        => Encryption.Encrypt(PassKey, data);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static byte[] Decrypt(byte[] data)
-        => Aes.Decrypt(data);
+    public static Outcome<byte[]> Decrypt(byte[] data)
+        => Encryption.Decrypt(PassKey, data);
 }

@@ -9,3 +9,4 @@ global using RZ.Foundation.Blazor.MVVM;
 
 global using RUnit = System.Reactive.Unit;
 global using static RZ.Foundation.AOT.Prelude;
+global using static RZ.Foundation.Prelude;

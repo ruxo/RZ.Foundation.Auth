@@ -41,8 +41,8 @@ public sealed class LineAuthViewModel(VmToolkit<LineAuthViewModel> tool, IConfig
 
         if (LineLoginConfig.From(configuration) is not { } config) return;
 
-        if (LineUtils.DecodeState(encodedState) is not { } state){
-            Logger.LogWarning("LINE callback is called with an invalid state: {State}", encodedState);
+        if (Fail(LineUtils.DecodeState(encodedState), out var e, out var state)){
+            Logger.LogWarning("LINE callback is called with an invalid state: {State} => {@Error}", encodedState, e);
             Status = new ViewStatus.Failed("Error");
             return;
         }

@@ -131,7 +131,7 @@ public partial class LoginViewModelBase(VmToolkit tool, NavigationManager nav, F
                         break;
 
                     case AfterSignInCheck.LoginSuccess login:
-                        await FirebaseAuthService.LoginSuccess(nav, js, login.User, ReturnUrl);
+                        (await FirebaseAuthService.LoginSuccess(nav, js, login.User, ReturnUrl)).Unwrap();
                         break;
 
                     default:

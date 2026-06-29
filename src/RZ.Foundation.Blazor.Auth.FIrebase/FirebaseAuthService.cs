@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Web;
+using LanguageExt;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -52,20 +53,23 @@ public class FirebaseAuthService
     readonly record struct SerializableClaim(string T, string V, string Y, string O);
     readonly record struct SerializableIdentity(IEnumerable<SerializableClaim> C, string? A);
 
-    public static string EncodeSignIn(ClaimsPrincipal user) {
+    public static Outcome<string> EncodeSignIn(ClaimsPrincipal user) {
         var serializable = from identity in user.Identities
                            select new SerializableIdentity(from claim in identity.Claims
                                                            select new SerializableClaim(claim.Type, claim.Value, claim.ValueType, claim.OriginalIssuer),
                                                            identity.AuthenticationType);
         var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(serializable));
         var compressed = DeflateCompress(bytes);
-        var encrypt = LibEncryption.Encrypt(compressed);
+        if (Fail(LibEncryption.Encrypt(compressed), out var e, out var encrypt)) return e.Trace();
         return Convert.ToBase64String(encrypt);
     }
 
-    public static ClaimsPrincipal DecodeSignIn(string encoded) {
-        var decoded = Encoding.UTF8.GetString(DeflateDecompress(LibEncryption.Decrypt(Convert.FromBase64String(encoded))));
-        var serializable = JsonSerializer.Deserialize<IEnumerable<SerializableIdentity>>(decoded);
+    public static Outcome<ClaimsPrincipal> DecodeSignIn(string encoded) {
+        if (Fail(LibEncryption.Decrypt(Convert.FromBase64String(encoded)), out var e, out var bytes)
+         || Fail(TryCatch(() => Encoding.UTF8.GetString(DeflateDecompress(bytes))), out e, out var decoded)
+         || Fail(JsonDeserialize<IEnumerable<SerializableIdentity>>(decoded), out e, out var serializable))
+            return e.Trace();
+
         return new ClaimsPrincipal(from identity in serializable
                                    select new ClaimsIdentity(from claim in identity.C
                                                              select new Claim(claim.T, claim.V, claim.Y, claim.O),
@@ -90,11 +94,13 @@ public class FirebaseAuthService
 
     #endregion
 
-    public static async ValueTask LoginSuccess(NavigationManager navManager, FirebaseJsInterop js, ClaimsPrincipal user, string? returnUrl) {
-        var encoded = EncodeSignIn(user);
+    public static async ValueTask<Outcome<Unit>> LoginSuccess(NavigationManager navManager, FirebaseJsInterop js, ClaimsPrincipal user, string? returnUrl) {
+        if (Fail(EncodeSignIn(user), out var e, out var encoded)) return e.Trace();
+
         await js.StoreAfterSignIn(encoded);
         var query = returnUrl is null ? string.Empty : $"?ReturnUrl={HttpUtility.UrlEncode(returnUrl)}";
         navManager.NavigateTo($"/auth/login/success{query}");
+        return unit;
     }
 
     static readonly Uri BaseIssuer = Uri.From("https://securetoken.google.com");
