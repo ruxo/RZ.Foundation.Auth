@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>RZ.Foundation.Blazor.Auth</RootNamespace>
+      <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
