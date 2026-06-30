@@ -33,7 +33,7 @@ public class FirebaseAuthService
             kv = KeyValueString.Parse(fbAdmin);
             ServiceAccount = new(kv["serviceAccount"], kv["privateKey"]);
 
-            issuer = BaseIssuer.ChangePath(Config.projectId);
+            issuer = BaseIssuer.ChangePath(Config.projectId).Unwrap();
 
             firebaseKeys = GetFirebaseAuthSecurityKeys(issuer).ToArray();
         }
@@ -103,7 +103,7 @@ public class FirebaseAuthService
         return unit;
     }
 
-    static readonly Uri BaseIssuer = Uri.From("https://securetoken.google.com");
+    static readonly Uri BaseIssuer = Uri.From("https://securetoken.google.com").Unwrap();
 
     /// <summary>
     /// Validate token and simply return null if token is invalid. This method doesn't throw.

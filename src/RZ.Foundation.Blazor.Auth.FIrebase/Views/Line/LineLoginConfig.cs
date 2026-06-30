@@ -13,7 +13,8 @@ readonly record struct LineLoginConfig(Uri Authority, string ClientId, string Cl
         var result = from a in kv.TryGetValue("Authority")
                      from ci in kv.TryGetValue("ClientId")
                      from cs in kv.TryGetValue("ClientSecret")
-                     select new LineLoginConfig(Uri.From(a), ci, cs);
+                     from uri in Uri.From(a).ToEither().ToOption()
+                     select new LineLoginConfig(uri, ci, cs);
         return result.ToNullable();
     }
 }
